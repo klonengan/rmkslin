@@ -1,0 +1,28 @@
+<?php
+/**
+ * Veritrans E-cash Mandiri Model Standard
+ * @modified Ryan Permana<rpermana@kemana.com>
+ */
+?>
+<?php $_code=$this->getMethodCode();
+$current_currency = Mage::app()->getStore()->getCurrentCurrencyCode();
+$conversion_rate = Mage::getStoreConfig('payment/ecashmandiri/conversion_rate');
+$base_gross = Mage::getSingleton('checkout/cart')->getQuote()->getGrandTotal();
+$gross = ($current_currency != 'IDR' ? $base_gross * $conversion_rate : $base_gross);
+$environment = Mage::getStoreConfig('payment/ecashmandiri/environment') == 'production';
+
+ ?>
+
+<ul class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
+    <li>
+	    <img src="<?php echo $this->getSkinUrl('images/ecashmandiri.png') ?>" height="100px" style="float:left;margin-right: 15px;"/>
+        <h3>Mandiri E-cash Transaction</h3>
+    </li>
+	<ol>
+        <li>Please make sure that you have registered to Mandiri E-cash and top up the balance before going through with the payment </li>
+        <li>To register for Mandiri E-cash, please download the application from your smartphone or dial to *141*6#.</li>
+        <li>Please visit the nearest ATM, mobile banking, internet banking, or Mandiri Clickpay to top up your account.</li>
+        <li>Payment via Mandiri E-cash will be processed online and your Mandiri E-cash account balance will be deducted automatically based on your total amount.</li>
+        <li>Your transaction will be cancelled if payment is not completed within 2 hours.</li>
+    </ol>
+</ul>

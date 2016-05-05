@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--/**
+ * Magento
+ *
+ * @author Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+-->
+
+<config>
+	<sections>
+		<payment>
+			<groups>
+				<Sakuku translate="label" module="Sakuku">
+						<label>Faspay BCA Sakuku</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1011</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Payment Method Name</comment>
+						</title>
+						<order_expire translate="label">
+							<label>Durasi Kadaluarsa</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Determine the order expired (in hours)</comment>
+						</order_expire>
+						<server_stage translate="label">
+							<label>Server Development</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Choose Server Destination</comment>
+						</server_stage>
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</Sakuku>
+			</groups>
+		</payment>
+	</sections>
+</config>

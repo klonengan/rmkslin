@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <KS_WebsiteSwitcher>
+            <active>true</active>
+            <codePool>local</codePool>
+        </KS_WebsiteSwitcher>
+    </modules>
+</config>

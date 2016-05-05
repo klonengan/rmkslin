@@ -1,0 +1,109 @@
+<?php
+    /*$locationID = Mage::getModel('core/cookie')->get(KS_Price_Helper_Data::COOKIE_NAME);
+    if(!$locationID) {
+        Mage::app()->getResponse()->setRedirect(Mage::getUrl('format'));
+    }*/
+    $locationID = 1;
+    $storedata  = Mage::getModel('ks_warehouse/location')->getCollection()->addFieldToFilter('id',$locationID);
+    $storelist  = Mage::getModel('ks_warehouse/location')->getCollection();
+    $storelist->addFieldToFilter('website_id', array('eq' => $storedata->getFirstItem()->getWebsiteID()));
+    $storelist->getSelect()
+        //->reset(Zend_Db_Select::COLUMNS)
+        ->join( array('c'=>'ks_directory_regency'), 'c.regency_code = main_table.city', array('code'=>'main_table.city', 'label'=>'c.regency_name') );
+?>
+<div class="store-switcher-custom">
+    <div class="store-switcher">
+        <span class="title"><strong><?php echo $this->__('Store');?> : <?php  echo  $storedata->getFirstItem()->getName();  ?></strong></span>
+        <span class="caret"></span>
+    </div>
+    <div class="store-dropdown" style="display: none">
+        <p><?php echo $this->__('You are now shopping in ');?> <?php echo $storedata->getFirstItem()->getName() .' - '. $storedata->getFirstItem()->getAddress() ?> </p>
+        <hr>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="form-group">
+                    <!-- keep base url link here -->
+                    <input type="hidden" id="brand_id" value="<?php  ?>">
+                    <select id="header-city-switcher" class="form-control">
+                        <option value="0"><?php echo $this->__('--- All City ---'); ?></option>
+                        <?php foreach ($storelist as $store ) : ?>
+                            <option value="<?php echo $store->getCity(); ?>"><?php echo $store->getLabel(); ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p class="text-right"><a href="#"><?php echo $this->__('Switch to Farmers Market?'); ?></a></p>
+        </div>
+        <div class="clear-fix"></div>
+        <div class="store-list" id="store-list-header">
+            <?php foreach ($storelist as $store ) : ?>
+                <div class="col-xs-6 col-md-6">
+                    <a href="#" class="thumbnail" onclick="switchstore(<?php echo $store->getId(); ?>)">
+                        <img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/brand/logo-01.png'; ?>" alt="">
+                        <center><h4><?php echo $store->getName(); ?></h4></center>
+                    </a>
+                </div>
+            <?php endforeach ?>
+        </div>
+        <div class="clear-fix"></div>
+        <hr>
+        <p><?php echo $this->__("Please note: By switching to Farmer Market, you will lose all products in your shopping cart");?></p>
+    </div>
+</div>
+<div class="modal fade" id="promptbox" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body ">
+                <div class="content-modal-body text-center">
+                    <img class="img-responsive center-block" src="<?php echo $this->getSkinUrl('images/select-store-icon.png'); ?>">
+                    <p>You are now shopping in Ranch Market</p>
+                    <p>By swithing to Farmers Market, you <span class="red-text">will lose all products</span> in your shopping cart.</p>
+                    <p class="green-text">Do you want continue?</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-swch-store" data-dismiss="modal"><?php echo $this->__("x cancel");?></button>
+                <button type="button" class="btn btn-swch-store" id="submitStoreID"><?php echo $this->__("continue");?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var locationID = "<?php echo $locationID; ?>";
+    function switchstore(storeid){
+       if(storeid == locationID) {
+           alert("<?php echo $this->__("You're already in this store"); ?>");
+       } else {
+           $j(".store-dropdown").hide();
+           $j('#promptbox').modal('show');
+           $j("#submitStoreID").click(function(){
+               ajaxCall(storeid);
+           });
+       }
+    }
+
+    function ajaxCall(storeid)
+    {
+        $j('#promptbox').modal('hide');
+        $j.ajax({
+            url: "<?php echo Mage::getBaseUrl();?>" + "websiteswitcher",
+            type: "POST",
+            data: { 'storeid': storeid },
+            /*before: function () {
+                $j('#overlay').show();
+            },*/
+            success: function (response) {
+                $j('#overlay').show();
+                location.reload();
+            },
+            error: function () {
+                console.log('failed');
+            }
+
+        });
+    }
+
+</script>

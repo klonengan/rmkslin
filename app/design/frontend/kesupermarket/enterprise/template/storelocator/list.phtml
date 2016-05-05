@@ -1,0 +1,308 @@
+<div class="storepage-title">
+    <h2><?php echo $this->__('Find Our Stores')?>
+        </h2></div>
+<div id="map_canvas" class="gmap-store" style="width: 100%; height: 400px;">&nbsp;</div>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script type="text/javascript">
+//<![CDATA[
+var jQ = jQuery.noConflict();
+var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP };
+var map = null;
+var bounds = null;
+var image = {
+    url: "<?php echo $this->getSkinUrl('images/map_marker.png') ?>",
+    size: new google.maps.Size(39,57),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(19,49)
+};
+var marker = [];
+
+var province = <?php echo Mage::getModel('storelocator/store')->getAvailableRegions() ?>;
+var locProvince = <?php echo Mage::getModel('storelocator/store')->getAvailableCitiesForRegion() ?>;
+var storeCity = <?php echo Mage::getModel('storelocator/store')->getAvailableCities() ?>;
+var storeData = [];
+
+<?php echo Mage::getModel('storelocator/store')->getAvailableStores() ?>
+
+//console.log(storeData);
+//console.log(locProvince);
+//console.log(storeCity);
+
+function loadMap(location) {
+	if (location == "") {
+		return false;
+	}
+    jQ("#map_canvas").html("");
+    bounds = new google.maps.LatLngBounds();
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    if (location.indexOf("<?php echo $this->__('All Cities') ?>") == -1) {
+        var pos = storeCity.indexOf(location);
+        var infoWindow = new google.maps.InfoWindow();
+        for (var i=0; i < storeData[pos].length; i++) {
+            if(typeof storeData[pos][i][1] === "undefined" || typeof storeData[pos][i][2] === "undefined") continue;
+            var myLatLng = new google.maps.LatLng(storeData[pos][i][1],storeData[pos][i][2]);
+            bounds.extend(myLatLng);
+            marker[pos] = [];
+            marker[pos][i] = new google.maps.Marker({
+                position: myLatLng,
+                icon: image,
+                animation: google.maps.Animation.DROP,
+                optimized: false
+            });
+            marker[pos][i].setMap(map);
+            google.maps.event.addListener(marker[pos][i], "click", (function(mark, storeData, i, pos) {
+                // Map Description
+                return function() {
+                    var winContent = "<div class='store-name'>"+storeData[pos][i][0]+"</div>";
+                    // Latitude
+                    if (storeData[pos][i][3] != "") {
+                        winContent += "<div class='store-info'>"+storeData[pos][i][3]+"</div>";
+                    }
+                    // Longitute
+                    if (storeData[pos][i][4] != "") {
+                        winContent += "<div class='store-info'>"+storeData[pos][i][4]+"</div>";
+                    }
+                    /*if (storeData[pos][i][5] != "") {
+                        winContent += "<div class='store-info'><b><?php echo $this->__('Phone No.') ?></b> "+storeData[pos][i][5]+"</div>";
+                    }
+                    if (storeData[pos][i][6] != "") {
+                        winContent += "<div class='store-info'><b><?php echo $this->__('Fax.') ?></b> "+storeData[pos][i][6]+"</div>";
+                    }
+                    if (storeData[pos][i][7] != "") {
+                        winContent += "<div class='store-operational'><b><?php echo $this->__('Store Operations:') ?></b><br/>"+storeData[pos][i][7]+"</div>";
+                    }*/
+                    infoWindow.setContent(winContent);
+                    infoWindow.open(map, mark);
+                }
+            })(marker[pos][i], storeData, i, pos));
+            map.fitBounds(bounds);
+            if(storeData[pos].length == 1){
+                map.setZoom(17);
+            }
+        }
+    } else {
+        for (var j=0; j < storeCity.length; j++) {
+		    var city = "";
+            var temp = storeCity[j];
+			if (location == "<?php echo $this->__('All Cities') ?>") {
+                if (temp.indexOf("Dept") == -1) {
+                    city = temp;
+                } else {
+                    city = "";
+                }
+            } else if (location == "<?php echo $this->__('All Provinces') ?>") {
+                if (temp.indexOf("Dept") > -1) {
+                    city = temp;
+                } else {
+                    city = "";
+                }
+            }
+            if (city != "") {
+                var pos = storeCity.indexOf(city);
+                var infoWindow = new google.maps.InfoWindow();
+
+                for (var i=0;i<storeData[pos].length;i++) {
+                    var myLatLng = new google.maps.LatLng(storeData[pos][i][1],storeData[pos][i][2]);
+                    bounds.extend(myLatLng);
+                    marker[pos] = [];
+                    marker[pos][i] = new google.maps.Marker({
+                        position: myLatLng,
+                        icon: image,
+                        animation: google.maps.Animation.DROP,
+                        optimized: false
+                    });
+                    marker[pos][i].setMap(map);
+                    google.maps.event.addListener(marker[pos][i], "click", (function(mark, storeData, i, pos) {
+                        return function() {
+                            var winContent = "<div class='store-name'>"+storeData[pos][i][0]+"</div>";
+                            if (storeData[pos][i][1] != "") {
+                                winContent += "<div class='store-info'>"+storeData[pos][i][1]+"</div>";
+                            }
+                            if (storeData[pos][i][2] != "") {
+                                winContent += "<div class='store-info'>"+storeData[pos][i][2]+"</div>";
+                            }
+                            /*if (storeData[pos][i][5] != "") {
+                                winContent += "<div class='store-info'><b><?php echo $this->__('Phone No.') ?></b> "+storeData[pos][i][5]+"</div>";
+                            }
+                            if (storeData[pos][i][6] != "") {
+                                winContent += "<div class='store-info'><b><?php echo $this->__('Fax.') ?></b> "+storeData[pos][i][6]+"</div>";
+                            }
+                            if (storeData[pos][i][7] != "") {
+                                winContent += "<div class='store-operational'><b><?php echo $this->__('Store Operations:') ?></b><br/>"+storeData[pos][i][7]+"</div>";
+                            }*/
+                            infoWindow.setContent(winContent);
+                            infoWindow.open(map, mark);
+                        }
+                    })(marker[pos][i], storeData, i, pos));
+                    map.fitBounds(bounds);
+                    if(storeData[pos].length == 1){
+                        map.setZoom(17);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function loadInfo(location) {
+	if (location == "") {
+		return false;
+	}
+    jQ(".store-info-wrp").html("");
+    var count = 0;
+    //var hotspot = <?php echo $this->getSkinUrl('images/hotspot.png');?>
+    var hotspot = "jancok";
+
+    if (location.indexOf("All") == -1) {
+        var pos = storeCity.indexOf(location);
+        var content = "";
+        var limit = storeData[pos].length-1;
+        for (var i=0; i < storeData[pos].length; i++) {
+            if (count == 0) {
+                content += "<div class='store-info-line'>";
+            }
+            content += "<div class='store-info-item col-sm-6 col-md-4";
+			if (count == 3) {
+				content += " last";
+			}
+            content += "'> <div class='thumbnail'><div class='store-name'>"+storeData[pos][i][0]+"</div>";
+            if (storeData[pos][i][3] != "") {
+                content += "<div class='store-info'>"+storeData[pos][i][3]+"</div>";
+            }
+            if (storeData[pos][i][4] != "") {
+                content += "<div class='store-info'>"+storeData[pos][i][4]+"</div>";
+            }
+            content += "</div></div>";
+            count++;
+            if (count >= 4) {
+                content += "</div>";
+                count = 0;
+            } else if (i == limit) {
+                content += "</div>";
+            }
+        }
+        jQ(".store-info-wrp").append(content);
+
+    } else {
+        for (var j=0;j<storeCity.length;j++) {
+		    var city = "";
+            var temp = storeCity[j];
+			if (location == "<?php echo $this->__('All Cities') ?>") {
+                if (temp.indexOf("Dept") == -1) {
+                    city = temp;
+                } else {
+                    city = "";
+                }
+            } else if (location == "<?php echo $this->__('All Provinces') ?>") {
+                if (temp.indexOf("Dept") > -1) {
+                    city = temp;
+                } else {
+                    city = "";
+                }
+            }
+            if (city != "") {
+                var pos = storeCity.indexOf(city);
+                var content = "";
+                var limit = storeData[pos].length-1;
+                for (var i=0;i<storeData[pos].length;i++) {
+                    if (count == 0) {
+                        content += "<div class='store-info-line'>";
+                    }
+					content += "<div class='store-info-item";
+					if (count == 3) {
+						content += " last";
+					}
+					content += "'><div class='store-name'>"+storeData[pos][i][0]+"</div>";
+                    if (storeData[pos][i][3] != "") {
+                        content += "<div class='store-info'>"+storeData[pos][i][3]+"</div>";
+                    }
+                    if (storeData[pos][i][4] != "") {
+                        content += "<div class='store-info'>"+storeData[pos][i][4]+"</div>";
+                    }
+		    if (storeData[pos][i][8] != "") {
+                        content += "<div class='hotspot'>"+hotspot+"</div>";
+                    }
+                    /*if (storeData[pos][i][5] != "") {
+                        content += "<div class='store-info'><b><?php echo $this->__('Phone No.') ?></b> "+storeData[pos][i][5]+"</div>";
+                    }
+                    if (storeData[pos][i][6] != "") {
+                        content += "<div class='store-info'><b><?php echo $this->__('Fax.') ?></b> "+storeData[pos][i][6]+"</div>";
+                    }
+                    if (storeData[pos][i][7] != "") {
+                        content += "<div class='store-operational'><b><?php echo $this->__('Store Operations:') ?></b><br/>"+storeData[pos][i][7]+"</div>";
+                    }*/
+					content += "</div>";
+                    count++;
+                    if (count >= 4) {
+                        content += "</div>";
+                        count = 0;
+                    } else if (i == limit) {
+                        content += "</div>";
+                    }
+                }
+                jQ(".store-info-wrp").append(content);
+            }
+        }
+    }
+}
+
+function loadCity(prov) {
+	var pos = province.indexOf(prov);
+    jQ("#store_locations > *").remove();
+	jQ("#store_locations").append("<option value=''><?php echo $this->__('--- Select City ---') ?></option>");
+	for (var i=0;i<locProvince[pos].length;i++) {
+		jQ("#store_locations").append("<option value='"+locProvince[pos][i]+"'>"+locProvince[pos][i]+"</option>");
+
+	}
+}
+function storeFound() {
+    var storeFound = jQ('.store-info-item').length;
+    jQ('#storeFound').html(storeFound +' '+ '<?php echo $this->__('Store(s) Found')?>');
+}
+jQ(document).ready(function() {
+
+    var province = jQ("#store_province option:selected").val();
+
+    if(province != ""){
+        loadCity(province);
+        jQ("#store_locations").prop("selectedIndex",1);
+        var city = jQ("#store_locations option:selected").val();
+        loadMap(city);
+        loadInfo(city);
+	    storeFound();
+    }
+    jQ("#store_province").change(function() {
+        var selLoc = jQ(this).val();
+        loadCity(selLoc);
+    });
+    jQ("#find_store").click(function() {
+        var selLoc = jQ("#store_locations").val();
+        loadMap(selLoc);
+        loadInfo(selLoc);
+	    storeFound();
+    });
+});
+//]]>
+</script>
+
+<div class="store-filter-wrp">
+    <div class="store-please"><?php echo $this->__('Please use the filter menu below to locate a store near you')?></div>
+    <form class="form-inline">
+        <div class="form-group">
+            <select class="filter-locations form-control" id="store_province">
+                <?php $default = 'DKI Jakarta'; ?>
+                <?php foreach (Mage::getModel('storelocator/store')->getAvailableRegionsForList() as $region): ?>
+                    <option value="<?php echo $region->getProvinceName() ?>" <?php echo $region->getProvinceName() == $default ? 'selected="selected"' : '' ?>><?php echo $region->getProvinceName() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="filter-locations form-control" id="store_locations">
+            </select>
+        </div>
+        <input type="button" class="btn btn-default" id="find_store" value="<?php echo $this->__('Find Now') ?>" />
+        <div id="storeFound"></div>
+
+    </form>
+</div>
+<div class="store-info-wrp">&nbsp;</div>

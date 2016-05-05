@@ -1,0 +1,65 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @see Mage_Page_Block_Html_Topmenu
+ */
+?>
+<?php $_menu = $this->getHtml('level-top') ?>
+<?php if($_menu): ?>
+    <nav id="nav">
+        <div style="padding:7px 0">
+            <ol class="nav-primary">
+                <?php echo $_menu ?>
+            </ol>
+            <div class="category-banner-menu">
+
+                    <ul>
+                    <?php
+                    $banners = Mage::getModel('banner/list')->getCollection()
+                    //$banners->addFieldToFilter('category_id', array('eq'=>$category->getId()));
+                    ->addFieldToFilter('type_id', array('eq'=>3));
+                    //->getSelect()
+                    //->reset(Zend_Db_Select::COLUMNS)
+                    //->join( array('c'=>'ks_banner_type'),'main_table.type_id == c.id',array('tid'=>'c.id'));
+                    foreach( $banners as $banner )
+                    {
+                        $imagePath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'/wysiwyg/banner/'.sprintf("%'.03d\n",$banner->getTypeId()).'/'.$banner->getImage();
+                        $img  = "<li banner-id='category-node-".$banner->getCategoryId()."'  style='display: none'>";
+                        $img .= "<img src='".$imagePath."' width='".$banner->getWidth()."' height='".$banner->getHeight()."'/>";
+                        $img .= "</li>";
+                        echo $img;
+                    }
+                    ?>
+                    </ul>
+
+            </div>
+        </div>
+    </nav>
+<?php endif ?>

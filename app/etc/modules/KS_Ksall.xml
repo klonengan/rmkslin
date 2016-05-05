@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<KS_Ksall>
+			<active>true</active>
+			<codePool>local</codePool>
+		</KS_Ksall>
+	</modules>
+</config>

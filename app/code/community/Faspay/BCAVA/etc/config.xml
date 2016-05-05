@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+-->
+<config>
+	<modules>
+		<Faspay_BCAVA>
+			<version>2.0.1</version>
+		</Faspay_BCAVA>
+	</modules>
+	<global>
+		<models>
+			<BCAVA>
+				<class>Faspay_BCAVA_Model</class>
+			</BCAVA>
+		</models>
+        <helpers>
+            <BCAVA>
+                <class>Faspay_BCAVA_Helper</class>
+            </BCAVA>
+        </helpers>
+		<blocks>
+			<BCAVA>
+				<class>Faspay_BCAVA_Block</class>
+			</BCAVA>
+		</blocks>
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<payment_tenor>
+					<to_order_payment>*</to_order_payment>
+				</payment_tenor>
+			</sales_convert_quote_payment>
+		</fieldsets>
+		<resources>
+			<BCAVA_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</BCAVA_write>
+			<BCAVA_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</BCAVA_read>
+		</resources>
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<BCAVA>
+					<file>BCAVA.xml</file>
+				</BCAVA>
+			</updates>
+		</layout>
+		<routers>
+			<BCAVA>
+				<use>standard</use>
+				<args>
+					<module>Faspay_BCAVA</module>
+					<frontName>BCAVA</frontName>
+				</args>
+			</BCAVA>
+		</routers>
+	</frontend>
+	
+	<default>
+		<payment>
+			<BCAVA>
+				<active>0</active>
+				<model>BCAVA/702</model>
+				<order_status>1</order_status>
+				<title>BCA Virtual Account Online</title>
+				<server_stage>1</server_stage>
+				<order_expire>1</order_expire>
+				<sort_order>21</sort_order>
+			</BCAVA>	
+		</payment>
+	</default> 
+</config>

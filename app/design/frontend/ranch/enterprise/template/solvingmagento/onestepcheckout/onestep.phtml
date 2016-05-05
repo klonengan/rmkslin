@@ -1,0 +1,195 @@
+<?php
+/**
+ * Solvingmagento_OneStepCheckout main template
+ *
+ * PHP version 5.3
+ *
+ * @category  Solvingmagento
+ * @package   Solvingmagento_OneStepCheckout
+ * @author    Oleg Ishenko <oleg.ishenko@solvingmagento.com>
+ * @copyright 2014 Oleg Ishenko
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @version   GIT: <0.1.0>
+ * @link      http://www.solvingmagento.com/
+ *
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout') ?></h1>
+</div>
+
+<div class="osc-column-wrapper">
+    <div id="osc-column-up" class="osc-column up"></div>
+
+    <div class="row">
+    <!-- column 1 left -->
+    <div id="osc-column-left" class="col-lg-4 col-md-4">
+        <div class="checkout_tab_header" id="your_info_tab">
+            <p class="text-center"><?php echo $this->__('Your Informations');?></p>
+        </div>
+    </div>
+
+    <!-- column 2 center -->
+    <div id="osc-column-center" class="col-lg-4 col-md-4">
+        <div class="checkout_tab_header" id="ship_tab">
+            <p class="text-center"><?php echo $this->__('Shipping & Payment Method');?></p>
+        </div>
+    </div>
+
+    <!-- column 3 right -->
+    <div id="osc-column-right" class="col-lg-4 col-md-4">
+        <div class="checkout_tab_header checkout_order_review" id="order_tab">
+            <p class="text-center"><?php echo $this->__('Order Review');?></p>
+        </div>
+    </div>
+    </div>
+
+    <div id="osc-column-bottom" class="osc-column bottom"></div>
+</div>
+
+<!----------------------------------------------------------------------------------------------------- tomboll update -->
+
+<!--<div>
+    <button
+        type="button"
+        title="<?php /*echo $this->__('Update order before placing');*/?>"
+        class="button btn-checkout btn-checkout-ks"
+        id="order_submit_button">
+
+        <span><span><?php /*echo $this->__('Update order before placing') */?></span></span>
+        <div id="review-submit-please-wait" class="please-wait" style="display: none">
+            <span class="please-wait">
+                <img
+                    src="<?php /*echo $this->getSkinUrl('images/opc-ajax-loader.gif') */?>"
+                    alt="<?php /*echo $this->__('Saving data, please wait...') */?>"
+                    title="<?php /*echo $this->__('Saving data, please wait...') */?>" class="v-middle" />
+            </span>
+        </div>
+    </button>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var buttonUpdateText = '<?php /*echo $this->__('Update order before placing') */?>',
+        buttonSaveText = '<?php /*echo $this->__('Proceed To Checkout') */?>',
+        buttonWaitText = '<?php /*echo $this->__('Please wait...') */?>';
+    //]]>
+</script>-->
+
+<!----------------------------------------------------------------------------------------------------- tomboll update -->
+
+
+<div id="checkoutStepsPreload" >
+    <?php
+    $i = 0;
+    foreach ($this->getSteps() as $stepId => $stepInfo): ?>
+        <?php if (!$this->getChild($stepId) || !$this->getChild($stepId)->isShow()): continue; endif; $i++ ?>
+        <div id="osc-<?php echo $stepId ?>" class="section<?php echo !empty($stepInfo['complete'])?' saved':'' ?>">
+            <div id="checkout-step-<?php echo $stepId ?>" class="step a-item">
+                <!--<div class="step-title">-->
+                    <!--<span class="number"><?php /*echo $i */?></span>-->
+                    <!--<p class="text-center"><?php /*echo $stepInfo['label'] */?></p>-->
+                <!--</div>-->
+                <?php echo $this->getChildHtml($stepId) ?>
+            </div>
+        </div>
+    <?php endforeach ?>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var baseUrl = '<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK, false); ?>';
+    //]]>
+</script>
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/MethodStep.js') ?>"
+    ></script>
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Checkout.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Login.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Billing.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Shipping.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/ShippingMethod.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Payment.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/classes/Review.js') ?>"
+    ></script>
+
+<script
+    type="text/javascript"
+    src="<?php echo $this->getSkinUrl('js/solvingmagento/onestepcheckout/onestep.js') ?>"
+    ></script>
+
+<script type="text/javascript">
+//    console.log(validateAddress());
+    jQuery( document ).ready(function(){
+
+        function checkWidth(){
+            var widthbrowser = jQuery( window ).width();
+
+            if( widthbrowser <= 768 ) {
+                //jQuery(".step.a-item").hide();
+                //jQuery("#osc-column-center").hide();
+                //jQuery("#osc-column-right").hide();
+                jQuery("#checkout-step-billing").show();
+                jQuery("#checkout-step-shipping").show();
+
+                /* btn-checkout-mobile */
+                jQuery(".btn-checkout-ks").on('click',function(){
+                    console.log("btn-checkout-ks pressed");
+
+                });
+
+
+                /* 1st column - You information */
+                jQuery("#your_info_tab").on('click', function(){
+                    jQuery("#checkout-step-billing").toggle();
+                    jQuery("#checkout-step-shipping").toggle();
+                });
+
+                /* 2nd column - shipping & payment */
+                jQuery("#ship_tab").on('click', function(){
+                    jQuery("#checkout-step-shipping_method").toggle();
+                    jQuery("#checkout-step-payment").toggle();
+                });
+
+                /* 3rd column - order review */
+                jQuery("#order_tab").on('click', function(){
+                    jQuery("#checkout-step-review").toggle();
+                });
+
+            }else{
+                jQuery(".step.a-item").show();
+            }
+
+//            console.log(widthbrowser);
+        }
+
+        checkWidth();
+
+        jQuery(window).resize(checkWidth);
+    });
+</script>

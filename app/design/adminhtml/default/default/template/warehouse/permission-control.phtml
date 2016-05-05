@@ -1,0 +1,63 @@
+<script>
+			var _unsetClasses;  
+			var _setClasses;  
+                		
+            window.onload = init_script;
+
+            function init_script(){
+                $('edit_form').insert('<input type="hidden" id="unset_warehouse" name="unset_warehouse"/><input type="hidden" id="set_warehouse" name="set_warehouse"/>');
+            }
+			
+			function restateCheckbox(o, _unsett, _sett){
+				_unsetClasses = $(_unsett).value.split(',');
+				_setClasses = $(_sett).value.split(',');
+				var v = o.value;
+				if(o.checked){
+					var i = _unsetClasses.indexOf(v);
+					if(i > 0){
+						o.checked = false;
+					}
+				}else{
+					var i = _setClasses.indexOf(v);
+					if(i > 0){
+						o.checked = true;
+					}
+				}
+			}
+			function checkUncheckAll(o,class_name, _unsett, _sett){
+				$$('.'+class_name).each(function(elem){
+					setUnset(elem, _unsett, _sett);
+				})
+			}
+			function setUnset(o, _unsett, _sett){
+				_unsetClasses = $(_unsett).value.split(',');
+				_setClasses = $(_sett).value.split(',');
+				var v = o.value;
+				if(o.checked){
+					//remove from unset
+					var i = _unsetClasses.indexOf(v);
+					if(i){
+						_unsetClasses.splice(i, 1);
+					}
+					//add to set
+					var i = _setClasses.indexOf(v);
+					if(i == -1){
+						_setClasses.push(v);
+					}
+				}else{
+					//add to unset
+					var i = _unsetClasses.indexOf(v);
+					if(i == -1){
+						_unsetClasses.push(v);
+					}
+					//remove from set
+					var i = _setClasses.indexOf(v);
+					if(i){
+						_setClasses.splice(i, 1);
+					}
+				}
+				$(_unsett).value = _unsetClasses.join(',');
+				$(_sett).value = _setClasses.join(',');
+			}
+
+</script>

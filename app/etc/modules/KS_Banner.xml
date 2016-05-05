@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <KS_Banner>
+            <active>true</active>
+            <codePool>local</codePool>
+        </KS_Banner>
+    </modules>
+</config> 

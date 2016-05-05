@@ -1,0 +1,67 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+?>
+
+<?php if ($_code=="faspay_405")){
+	$lastOrderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+	$session= Mage::getSingleton('checkout/session');
+	$order = Mage::getModel('sales/order')->loadByIncrementId($lastOrderId);
+	$items = $session->getQuote()->getAllItems();
+	//print_r($items);exit;
+	$index = 0;
+	$order_products = Mage::helper('faspay')->getProducts();
+?>
+
+<form action="" >
+	<table id="checkout-review-table" class="data-table">
+		<thead>
+			<th>Product Name</th>
+			<th>Tipe Pembayaran</th>
+		</thead>
+		<tbody>
+			<?php foreach ($items as $item) { ?>
+			<?php $itemprice = $item->getPrice(); ?>					
+			<tr>
+				<td>
+					<?php echo $item->getName(); ?>
+				</td>
+				<td><select id="payment_tenor_<?php echo $index ?>" onChange="checkSelectInput()" class="payment_tenor" type="payment_tenor" name="payment[payment_tenor_<?php echo $index; ?>]" style="display:none" >
+						<option value="00">Pembayaran Full Payment</option>
+						<?php if (Mage::getStoreConfig('payment/faspay_405/installment_3_month')== 1 ){ ?>
+							<?php if ($itemprice >= Mage::getStoreConfig('payment/faspay_405/min_price_3_month') and Mage::getStoreConfig('payment/faspay_405/installment_3_month')== 1 ) {?>
+								<option value="03">Pembayaran Periode 3 Bulan</option>
+							<?php } ?>
+						<?php } ?>
+						<?php if (Mage::getStoreConfig('payment/faspay_405/installment_6_month')== 1){ ?>
+							<?php if ($itemprice >= Mage::getStoreConfig('payment/faspay_405/min_price_6_month') and Mage::getStoreConfig('payment/faspay_405/installment_6_month')== 1 )  {?>
+								<option value="06">Pembayaran Periode 6 Bulan</option>
+							<?php } ?>
+						<?php } ?>
+						<?php if (Mage::getStoreConfig('payment/faspay_405/installment_12_month')== 1){ ?>
+							<?php if ($itemprice >= Mage::getStoreConfig('payment/faspay_405/min_price_12_month') and Mage::getStoreConfig('payment/faspay_405/installment_12_month')== 1 )  {?>
+								<option value="12">Pembayaran Periode 12 Bulan</option>
+							<?php } ?>
+						<?php } ?>
+						<?php if (Mage::getStoreConfig('payment/faspay_405/installment_24_month')== 1){ ?>
+							<?php if ($itemprice >= Mage::getStoreConfig('payment/faspay_405/min_price_24_month')and Mage::getStoreConfig('payment/faspay_405/installment_24_month')== 1 ) {?>
+								<option value="24">Pembayaran Periode 24 Bulan</option>
+							<?php } ?>
+						<?php } ?>
+					</select> 
+				</td>
+			</tr>
+			<?php 
+				$index++;
+				}
+			?>
+		</tbody>
+	</table>
+</form>
+
+<?php } ?>

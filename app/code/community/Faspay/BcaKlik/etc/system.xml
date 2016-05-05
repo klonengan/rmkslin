@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<config>
+  <sections>
+    <payment>
+      <groups>
+        <klikbca translate="label comment" module="klikbca">
+          <label>KlikBCA</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>1</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <fields>
+            <active translate="label">
+              <label>Enabled</label>
+              <config_path>payment/klikbca/active</config_path>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </active>
+            <merchant_name translate="label">
+              <label>Nama Merchant</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+              <comment>Masukkan Nama Merchant(Input Merchant Name)</comment>
+            </merchant_name>
+            <title translate="label">
+              <label>Title</label>
+              <config_path>payment/klikbca/title</config_path>
+              <frontend_type>text</frontend_type>
+              <sort_order>30</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </title>
+            <merchantcode translate="label">
+              <label>Merchant Code</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>40</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </merchantcode>
+            <password translate="label">
+              <label>Password</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>50</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </password>
+            <order_expired translate="label">
+              <label>Durasi Kadaluarsa</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>60</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>Determine the order expired (in hours)</comment>
+            </order_expired>
+            <sort_order translate="label">
+              <label>Sort Order</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>70</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </sort_order>
+            <server_stage translate="label">
+              <label>Environment</label>
+              <frontend_type>select</frontend_type>
+              <source_model>klikbca/source_Environment</source_model>
+              <sort_order>80</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>Choose Server Destination</comment>
+            </server_stage>
+          </fields>
+        </klikbca>
+      </groups>
+    </payment>
+  </sections>
+</config>

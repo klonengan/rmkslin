@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_KSDirectory
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Setting Menu and ACL for KS Directory
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ */
+ -->
+<config>
+    <menu>
+         <ksall>
+            <children>
+                <ksdirectory translate="title" module="ksdirectory">
+                    <title>Directory Management</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/ksdirectory_directory/index</action>
+                </ksdirectory>
+            </children>
+         </ksall>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <ksdirectory translate="title" module="ksdirectory">
+                                        <title>KS Directory</title>
+                                        <sort_order>620</sort_order>
+                                    </ksdirectory>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <ksall>
+                        <children>
+                            <ksdirectory translate="title" module="ksdirectory">
+                                <title>KS Directory</title>
+                                <sort_order>20</sort_order>
+                                <children>
+                                    <actions translate="title">
+                                        <title>Actions</title>
+                                        <sort_order>10</sort_order>
+                                        <children>
+                                            <add translate="title"><title>Add Data</title><sort_order>10</sort_order></add>
+                                            <view translate="title"><title>View Data</title><sort_order>20</sort_order></view>
+                                            <edit translate="title"><title>Edit Data</title><sort_order>30</sort_order></edit>
+                                            <delete translate="title"><title>Delete Data</title><sort_order>40</sort_order></delete>
+                                        </children>
+                                    </actions>
+                                </children>
+                            </ksdirectory>
+                        </children>
+                    </ksall>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

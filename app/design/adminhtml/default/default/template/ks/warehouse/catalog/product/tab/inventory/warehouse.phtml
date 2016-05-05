@@ -1,0 +1,115 @@
+<?php
+	$_htmlId = "inventory_warehouse_stock";
+	$_htmlName = "product[warehouse_stock]";
+	$_htmlRow = "warehouse_stock_row";
+	$_htmlClass = "input-text";
+	$_readonly = 0;
+?>
+<tr>
+    <td class="label"><?php echo $this->__('Warehouse Stock') ?></td>
+    <td colspan="10" class="grid tier" style="padding-left:5px; width:550px">
+    <table cellspacing="0" class="data border" id="tiers_table" style="width:550px">
+        <col width="185" />
+        <col width="120" />
+        <col width="75" />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th><?php echo Mage::helper('sales')->__('Warehouse') ?></th>
+                <th><?php echo Mage::helper('catalog')->__('Qty') ?></th>
+                <th><?php echo Mage::helper('catalog')->__('Status') ?></th>
+                <th class="last"><?php echo Mage::helper('catalog')->__('Action') ?></th>
+            </tr>
+        </thead>
+        <tbody id="<?php echo $_htmlId ?>_container"></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+        </tfoot>
+    </table>
+</td>
+<td class="value scope-label"><?php echo Mage::helper('adminhtml')->__('[GLOBAL]') ?></td>
+</tr>
+<script type="text/javascript">
+//<![CDATA[
+var warehouseStockRowTemplate = '<tr>'
+    + '<td>'
+    + '<select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][warehouse_id]" id="<?php echo $_htmlRow?>_{{index}}_warehouse_id">'
+    <?php foreach ($this->getWarehouse() as $_warehouse): ?>
+    + '<option value="<?php echo $_warehouse['value'] ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($_warehouse['label'])) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+	+ '<td><input class="<?php echo $_htmlClass ?> " type="text" name="<?php echo $_htmlName ?>[{{index}}][qty]" value="{{qty}}" id="<?php echo $_htmlRow?>_{{index}}_qty" /></td>'
+    + '<td>'
+    + '<select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][status]" id="<?php echo $_htmlRow?>_{{index}}_status">'
+    <?php foreach ($this->getStockOption() as $_status): ?>
+    + '<option value="<?php echo $_status['value'] ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($_status['label'])) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+    + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="<?php echo $_htmlRow?>_{{index}}_delete" />'
+    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Warehouse Stock")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="<?php echo $_htmlRow?>_{{index}}_delete_button" onclick="return warehouseStockControl.deleteItem(event);">'
+    + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
+    + '</tr>';
+
+var warehouseStockControl = {
+    template: new Template(warehouseStockRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+    itemsCount: 0,
+    addItem : function () {
+        var data = {
+            warehouse_id: '0',
+            qty: '',
+            status: '',
+            readOnly: false,
+            index: this.itemsCount++
+        };
+
+        if(arguments.length >= 3) {
+            data.warehouse_id 	= arguments[0];
+            data.qty      		= arguments[1];
+            data.status      	= arguments[2];
+        }
+
+        Element.insert($('<?php echo $_htmlId ?>_container'), {
+            bottom : this.template.evaluate(data)
+        });
+
+        $('<?php echo $_htmlRow?>_' + data.index + '_warehouse_id').value    = data.warehouse_id;
+        $('<?php echo $_htmlRow?>_' + data.index + '_qty').value    = data.qty;
+        $('<?php echo $_htmlRow?>_' + data.index + '_status').value    = data.status;
+
+        if (data.readOnly == '1') {
+            ['warehouse_id','price', 'delete'].each(function(idx){
+                $('<?php echo $_htmlRow?>_'+data.index+'_'+idx).disabled = true;
+            });
+            $('<?php echo $_htmlRow?>_'+data.index+'_delete_button').hide();
+        }
+
+        <?php if ($_readonly): ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(this.disableElement);
+        $('<?php echo $_htmlId ?>_container').up('table').select('button').each(this.disableElement);
+        <?php else: ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(function(el){ Event.observe(el, 'change', el.setHasChanges.bind(el)); });
+        <?php endif; ?>
+    },
+    disableElement: function(el) {
+        el.disabled = true;
+        el.addClassName('disabled');
+    },
+    deleteItem: function(event) {
+        var tr = Event.findElement(event, 'tr');
+        if (tr) {
+            Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+            Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+            Element.hide(tr);
+            Element.addClassName(tr, 'no-display template');
+        }
+        return false;
+    }
+};
+
+<?php foreach ($this->getValues() as $_item): ?>
+warehouseStockControl.addItem('<?php echo $_item['location_id'] ?>', '<?php echo sprintf('%.2f', $_item['qty']) ?>','<?php echo $_item['is_instock'] ?>');
+<?php endforeach; ?>
+//]]>
+</script>

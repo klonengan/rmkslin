@@ -1,0 +1,130 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_KSDirectory
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * KS_KSDirectory_Model_Mysql4_Village
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ */
+
+
+class KS_KSDirectory_Model_Mysql4_Village extends Mage_Core_Model_Mysql4_Abstract
+{
+    public function _construct()
+    {    
+        $this->_init('ksdirectory/village', 'id');
+    }
+
+    public function updateProvinceCode($oldProvinceCode, $newProvinceCode)
+    {
+    	$_model = Mage::getModel('ksdirectory/village')->getCollection()->addFieldToFilter('subdistrict_code', array('like' => $oldProvinceCode.'%'));
+    	if($_model->getSize() > 0){
+    		
+    		$writeDb = $this->_getWriteAdapter();
+	    	$villageTable = $this->getTable('ksdirectory/village');
+
+	    	if($oldProvinceCode != $newProvinceCode){
+	    		try {
+		    		foreach ($_model as $village) {
+		                $villageId = $village->getId();
+		                $newSubdistrictCode = str_replace($oldProvinceCode, $newProvinceCode, $village->getSubdistrictCode());
+		                $newVillageCode = str_replace($oldProvinceCode, $newProvinceCode, $village->getVillageCode());
+		               
+		                $data = array(
+		                    'subdistrict_code' => $newSubdistrictCode,
+		                    'village_code' => $newVillageCode
+		                );
+		                $condition = ' id = '.$villageId;
+		                $writeDb->update($villageTable, $data, $condition);
+		            }
+		            return true;
+		        }
+                catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                }    
+	    	}
+    	}
+    	return false;
+    }
+
+    public function updateRegencyCode($oldRegencyCode, $newRegencyCode)
+    {
+    	$_model = Mage::getModel('ksdirectory/village')->getCollection()->addFieldToFilter('subdistrict_code', array('like' => $oldRegencyCode.'%'));
+    	if($_model->getSize() > 0){
+    		
+    		$writeDb = $this->_getWriteAdapter();
+	    	$villageTable = $this->getTable('ksdirectory/village');
+
+	    	if($oldRegencyCode != $newRegencyCode){
+	    		try {
+		    		foreach ($_model as $village) {
+		                $villageId = $village->getId();
+		                $newSubdistrictCode = str_replace($oldRegencyCode, $newRegencyCode, $village->getSubdistrictCode());
+		                $newVillageCode = str_replace($oldRegencyCode, $newRegencyCode, $village->getVillageCode());
+		               
+		                $data = array(
+		                    'subdistrict_code' => $newSubdistrictCode,
+		                    'village_code' => $newVillageCode
+		                );
+		                $condition = ' id = '.$villageId;
+		                $writeDb->update($villageTable, $data, $condition);
+		            }
+		            return true;
+		        }
+                catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                }    
+	    	}
+    	}
+    	return false;
+    }
+
+    public function updateSubdistrictCode($oldSubdistrictCode, $newSubdistrictCode)
+    {
+    	$_model = Mage::getModel('ksdirectory/village')->getCollection()->addFieldToFilter('subdistrict_code', array('eq' => $oldSubdistrictCode));
+    	if($_model->getSize() > 0){
+    		
+    		$writeDb = $this->_getWriteAdapter();
+	    	$villageTable = $this->getTable('ksdirectory/village');
+
+	    	if($oldSubdistrictCode != $newSubdistrictCode){
+	    		try {
+		    		foreach ($_model as $village) {
+		                $villageId = $village->getId();
+		                $newVillageCode = str_replace($oldSubdistrictCode, $newSubdistrictCode, $village->getVillageCode());
+		               
+		                $data = array(
+		                    'subdistrict_code' => $newSubdistrictCode,
+		                    'village_code' => $newVillageCode
+		                );
+		                $condition = ' id = '.$villageId;
+		                $writeDb->update($villageTable, $data, $condition);
+		            }
+		            return true;
+		        }
+                catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                }    
+	    	}
+    	}
+    	return false;
+    }
+
+}

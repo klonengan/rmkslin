@@ -1,0 +1,31 @@
+<?php
+$_productCollection = Mage::helper('homepage')->mostviewed();
+$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+?>
+<div class="block block-list block-viewed">
+    <div class="block-content">
+        <ol id="recently-viewed-items" class="mini-products-list">
+            <?php foreach ($_productCollection as $_item): ?>
+                <?php
+                $product = Mage::getModel('catalog/product')->load($_item['entity_id']);
+                ?>
+                <li class="item odd">
+                    <a href="<?php echo $product->getProductUrl()?>">
+                        <span class="product-image">
+
+                            <img src="<?php echo Mage::helper('catalog/image')->init($product, 'image')->resize(50,50); ?>" width="50" height="50">
+                        </span>
+                    </a>
+                    <div class="product-details">
+                        <p class="product-name">
+                            <a href="<?php echo $product->getProductUrl()?>"><?php echo $product->getName(); ?></a>
+                            <br>
+                            <span><?php echo $currency_code.' '.number_format($product->getPrice()); ?></span>
+                        </p>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+        <script type="text/javascript">decorateList('recently-viewed-items');</script>
+    </div>
+</div>

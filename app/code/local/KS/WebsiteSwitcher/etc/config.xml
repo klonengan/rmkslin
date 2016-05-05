@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <KS_WebsiteSwitcher>
+            <version>1.0.0</version>
+        </KS_WebsiteSwitcher>
+    </modules>
+    <global>
+        <blocks>
+            <websiteswitcher>
+                <class>KS_WebsiteSwitcher_Block</class>
+            </websiteswitcher>
+        </blocks>
+        <helpers>
+            <websiteswitcher>
+                <class>KS_WebsiteSwitcher_Helper</class>
+            </websiteswitcher>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <ks_websiteswitcher>
+                <use>standard</use>
+                <args>
+                    <module>KS_WebsiteSwitcher</module>
+                    <frontName>websiteswitcher</frontName>
+                </args>
+            </ks_websiteswitcher>
+        </routers>
+    </frontend>
+</config>

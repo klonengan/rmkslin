@@ -1,0 +1,165 @@
+<!-- landing Page -->
+<div class="landingpage">
+<div class="row">
+    <div class="col-xs-12">
+    <div class="lp_header">
+        <h1><?php echo $this->__('Welcome');?></h1>
+        <p><?php echo $this->__('Please select the format below to continue shopping');?></p>
+    </div>
+    </div>
+</div>
+    <div class="row">
+    <!-- Block Logo format  -->
+    <div class="lp_logos col-lg-12">
+
+        <?php foreach($this->getWebsite() as $website => $value):?>
+            <div class="col-xs-6">
+            <div class="format_logo" id="<?php echo $value['code']?>" data-id="<?php echo $value['brand_id']; ?>" >
+                <?php $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/brand/'.$value['image']; ?>
+                <a href="#" class="text-center"><img src="<?php echo $image_url; ?>"></a>
+            </div>
+            </div>
+        <?php endforeach; ?>
+
+    </div>
+    <!-- End Block Logo format  -->
+
+    <?php //echo "<pre>";var_dump($this->getStoreRanch()); ?>
+
+    <!-- Block Select Location -->
+    <div class="lp_popup hide col-lg-12" id="rm_locator">
+        <div class="buttons-wrapper">
+            <!--<span id="button-get-position" class="button-demo" onclick="getLocation()">Get current position</span>-->
+            <!--<span id="georesponse"></span>-->
+        </div>
+        <form class="form-inline" id="format-form" action="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'format/index/savestore'; ?>" method="POST">
+            <input type="hidden" name="brand" id="brand_pick" />
+            <div class="form-group">
+                <div class="select_city">
+                    <!--<label>City</label>-->
+                    <select id="city-selector" name="city" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="The number of tags to create.">
+                        <option value="0"><?php echo $this->__('All City'); ?></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="select_store">
+                    <!--<label>Store</label>-->
+                    <select id="store-selector" name="store" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="The number of tags to create.">
+                        <option value="0"><?php echo $this->__('All Store'); ?></option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default"><?php echo $this->__('Enter');?></button>
+        </form>
+
+    </div></div>
+    <!-- End Block Select Location -->
+    <div class="lp_footer">
+
+        <p><?php echo $this->__('Please contact us or call our support'); ?> - <?php echo Mage::getStoreConfig('general/store_information/phone'); ?></p>
+
+        <p class="lp_footer_links">
+            <a href=""><?php echo $this->__('Supra Boga Lestari');?></a><span>|</span>
+            <a href=""><?php echo $this->__('Terms & Conditions');?></a><span>|</span>
+            <a href=""><?php echo $this->__('Privacy Policy');?></a><span>|</span>
+            <a href=""><?php echo $this->__('Contact Us');?></a>
+        </p>
+
+        <hr>
+        <p>&copy; <?php echo date('Y');?> <?php echo Mage::getStoreConfig('general/store_information/name'); ?> </p>
+
+    </div>
+</div>
+<script>
+
+    function displayLocation(latitude,longitude){
+        var request = new XMLHttpRequest();
+        var method = 'GET';
+        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=true';
+        var async = true;
+
+        request.open(method, url, async)
+
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                var data = JSON.parse(request.responseText);
+                var address = data.results[0];
+                var cityname = address.address_components[5]['long_name'];
+                loadGeoCity(cityname);
+                //console.log(address);
+                //console.log(address.address_components[6]['long_name']);
+                //console.log(address.address_components[5]['long_name']);
+            }
+        };
+        request.send();
+    };
+
+    var city = $j("#city-selector"), store = $j("#store-selector"), form = $j("#format-form");
+    /* pre loader */
+    var loading = "<option value=\"\">"+"Loading..."+"</option>";
+
+    function loadGeoCity(cityname){
+        $j.ajax({
+            method: "POST",
+            url: formatUrl+"loadGeoCity",
+            data: { brand_id : $j("#brand_pick").val(), city:cityname  },
+            beforeSend: function () {
+                //$j(city).html(loading).prop("disabled", true).addClass('select-disabled');
+            },
+            success: function (response) {
+                var cities = jQuery.parseJSON(response);
+                var citycode = cities.kodecity[0]['regency_code'];
+                var cityname = cities.kodecity[0]['regency_name'];
+                $j("#city-selector > option ").each(function() {
+                    console.log(this.text + ' ' + this.value);
+                });
+                //$j(city).val(citycode).change();
+                //console.log(citycode + ' - ' + cityname);
+            },
+            error: function () {
+                console.log('failed');
+            }
+        })
+    }
+
+    /* on change city */
+
+    var successCallback = function(position){
+        var x = position.coords.latitude;
+        var y = position.coords.longitude;
+        displayLocation(x,y);
+    };
+
+    var errorCallback = function(error){
+        var errorMessage = 'Unknown error';
+        switch(error.code) {
+            case 1:
+                errorMessage = 'Permission denied';
+                break;
+            case 2:
+                errorMessage = 'Position unavailable';
+                break;
+            case 3:
+                errorMessage = 'Timeout';
+                break;
+        }
+        $j("#georesponse").text(errorMessage);
+        //document.write(errorMessage);
+    };
+
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 1000,
+        maximumAge: 0
+    };
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback,errorCallback,options);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+</script>

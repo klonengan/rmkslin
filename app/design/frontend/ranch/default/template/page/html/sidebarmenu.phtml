@@ -1,0 +1,78 @@
+<?php $_helper = Mage::helper('catalog/category') ?>
+<?php $_categories = $_helper->getStoreCategories() ?>
+<?php $currentCategory = Mage::registry('current_category') ?>
+<div id="sidebar-menu">
+
+    <div id="sidebar-top">
+        <?php echo $this->getChildHtml('store_language') ?>
+        <div id="sidebar-lang" class="pull-left">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-danger"><?php echo $this->__('English');?></button>
+                <button type="button" class="btn btn-default"><?php echo $this->__('Bahasa');?></button>
+            </div>
+        </div>
+        <a id="sidebar-close" class="pull-right">x</a>
+    </div>
+
+    <div class="clear-fix"></div>
+
+    <div id="sidebar-store">
+        <p>
+            <span><i><?php echo $this->__("Now you're in"); ?></i></span><br>
+            <span><strong><?php echo $this->__("Ranch Market"); ?></strong></span><br>
+            <span><small><?php echo $this->__("Pasanggrahan Raya No. 6"); ?></small></span>
+        </p>
+        <a class="btn btn-default"><?php echo $this->__("Change Brands / Store"); ?></a>
+    </div>
+
+    <div class="clear-fix"></div>
+
+    <div id="sidebar-catlevel-0" class="slideRight sidebar-content">
+        <ul class="sidebarmainmenu">
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>"><?php echo $this->__('Home');?></a></li>
+            <li id="sidebar-content-category"><a href="#"><?php echo $this->__('Categories');?></a></li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/customer/account/login"><?php echo $this->__('Login / Register');?></a></li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>"><?php echo $this->__('Contact Us');?></a></li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>"><?php echo $this->__('Help');?></a></li>
+        </ul>
+    </div>
+
+    <div id="sidebar-catlevel-1" class="slideRight hidecontent">
+        <small id="sidebar-catlevel-1-back">Back</small>
+        <div class="clear-fix"></div>
+        <?php if (count($_categories) > 0): ?>
+            <ul class="mainmenucategory">
+                <?php foreach($_categories as $_category): ?>
+                    <?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+                    <li data-id="<?php echo $_category->getid(); ?>">
+                        <span class="catlevel-1-header"><?php echo $_category->getName() ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+
+    <div id="sidebar-catlevel-2" class="slideRight hidecontent">
+        <small id="sidebar-catlevel-2-back">Back</small>
+        <div class="clear-fix"></div>
+        <?php if (count($_categories) > 0): ?>
+            <?php foreach($_categories as $_category): ?>
+                <?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+                    <?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+                    <?php $_subcategories = $_category->getChildrenCategories() ?>
+                    <?php if (count($_subcategories) > 0): ?>
+                        <ul class="submenucategory" id="sidebar-<?php echo $_category->getid(); ?>" style="display: none">
+                            <li><a href="<?php echo $_helper->getCategoryUrl($_category); ?>"><?php echo $this->__('All')?> <?php echo $_category->getName() ?></a></li>
+                            <?php foreach($_subcategories as $_subcategory): ?>
+                                <li>
+                                    <a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>"><?php echo $_subcategory->getName() ?></a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+
+
+</div>

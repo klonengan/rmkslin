@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <KS_Ecashmandiri>
+            <active>true</active>
+            <codePool>local</codePool>
+        </KS_Ecashmandiri>
+    </modules>
+</config>

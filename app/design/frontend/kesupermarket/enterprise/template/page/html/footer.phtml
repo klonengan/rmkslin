@@ -1,0 +1,139 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+?>
+<!-- mobile footer -->
+<div class="mobile-footer hidden-md hidden-lg">
+    <div class="col-sm-12">
+        <div class="trigger-holder">
+            <h4>USEFULL INFORMATION</h4>
+            <div class="btn-triger">
+                <div class="strip-content"></div>
+                <div class="strip-content-vertical"></div>
+            </div>
+            <div class="clear-fix"></div>
+        </div>
+        <div class="slide-content">
+            <!-- need help -->
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_contact_mobile')->toHtml(); ?>
+
+            <div class="social-media-holder">
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_sm_mobile')->toHtml(); ?>
+            </div>
+            <div class="clear-fix"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer-container">
+    <div class="container footer" >
+        <div class="row" id="footer-area">
+            <?php //echo $this->getChildHtml() ?>
+
+            <div class="col-lg-2 col-md-2 information">
+                <!-- Information -->
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_company')->toHtml(); ?>
+            </div>
+            <div class="col-lg-2 col-md-2 help">
+                <!-- help -->
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_help')->toHtml(); ?>
+            </div>
+            <div class="col-lg-3 col-md-3 nhelp">
+                <!-- need help -->
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_contact')->toHtml(); ?>
+            </div>
+            <div class="col-lg-5 col-md-5 newsletter">
+                <!-- newsletter -->
+                <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?>
+            </div>
+
+        </div>
+
+
+            <div class="container footer bottom-footer hidden-sm hidden-xs">
+                <hr>
+                <div class="pull-left">
+                    <?php echo $this->getCopyright() ?>
+                </div>
+                <div class="pull-right">
+                    <ul class="footer-payment">
+                        <li><img src="<?php echo $this->getSkinUrl('images/payment/veritrans.jpg') ?>"></li>
+                        <li><img src="<?php echo $this->getSkinUrl('images/payment/bca.jpg') ?>"></li>
+                        <li><img src="<?php echo $this->getSkinUrl('images/payment/visa.jpg') ?>"></li>
+                        <li><img src="<?php echo $this->getSkinUrl('images/payment/master.png') ?>"></li>
+                    </ul>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="btn-scroll-top"></div>
+
+</div>
+<!-- overlay switch store -->
+<div id="overlay" class="overlaytransparant hidecontent">
+    <div id="overlay-content">
+        <p>Please wait.. </p>
+    </div>
+</div>
+<!-- overlay menu hover -->
+<div id="overlay" class="overlaytransparant-menu">
+
+</div>
+<!-- footer mobile -->
+<div class="container hidden-md hidden-lg">
+    <div class="overlay hidecontent"></div>
+    <div class="footer-mobile">
+
+        <div class="footer-link-holder">
+
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_company_mobile')->toHtml(); ?>
+
+        </div>
+
+<!--        <div class="clearfix"></div>-->
+        <div class="copyr">
+            <p class="text-center">
+                <?php echo $this->getCopyright() ?>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+
+        jQuery(".slide-content").hide();
+        jQuery(".strip-content-vertical").show();
+
+        jQuery('.btn-triger').on('click', function () {
+            jQuery(".slide-content").toggle("fast");
+            jQuery(".strip-content-vertical").toggle();
+        });
+    });
+</script>

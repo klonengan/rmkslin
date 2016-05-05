@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_Banner
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Setting Menu and ACL for KS_Banner
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ */
+ -->
+<config>
+    <menu>
+         <ksall>
+            <children>
+                <banner translate="title" module="banner">
+                    <title>Banner Management</title>
+                    <sort_order>50</sort_order>
+                    <children>
+                        <banner_list translate="title" module="banner">
+                            <title>Banner Content Management</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/banner_banner/index</action>
+                        </banner_list>
+                        <banner_type translate="title" module="banner">
+                            <title>Banner Type Management</title>
+                            <sort_order>20</sort_order>
+                            <action>adminhtml/banner_banner/type</action>
+                        </banner_type>
+                    </children>
+                </banner>
+            </children>
+         </ksall>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <banner translate="title" module="banner">
+                                        <title>Banner Management</title>
+                                        <sort_order>680</sort_order>
+                                    </banner>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <ksall>
+                        <children>
+                            <banner translate="title" module="banner">
+                                <title>Banner Management</title>
+                                <sort_order>20</sort_order>
+                                <children>
+                                    <banner_list translate="title" module="banner">
+                                        <title>Banner Content Management</title>
+                                        <sort_order>10</sort_order>
+                                        <children>
+                                            <add translate="title"><title>Add Data</title><sort_order>10</sort_order></add>
+                                            <view translate="title"><title>View Data</title><sort_order>20</sort_order></view>
+                                            <edit translate="title"><title>Edit Data</title><sort_order>30</sort_order></edit>
+                                            <delete translate="title"><title>Delete Data</title><sort_order>40</sort_order></delete>
+                                        </children>
+                                    </banner_list>
+                                    <banner_type translate="title" module="banner">
+                                        <title>Banner Type Management</title>
+                                        <sort_order>20</sort_order>
+                                        <children>
+                                            <add translate="title"><title>Add Data</title><sort_order>10</sort_order></add>
+                                            <view translate="title"><title>View Data</title><sort_order>20</sort_order></view>
+                                            <edit translate="title"><title>Edit Data</title><sort_order>30</sort_order></edit>
+                                            <delete translate="title"><title>Delete Data</title><sort_order>40</sort_order></delete>
+                                        </children>
+                                    </banner_type>
+                                </children>
+                            </banner>
+                        </children>
+                    </ksall>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

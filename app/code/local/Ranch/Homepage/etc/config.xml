@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ranch_Homepage>
+            <version>0.1.0</version>
+        </Ranch_Homepage>
+    </modules>
+    <global>
+        <blocks>
+            <homepage>
+                <class>Ranch_Homepage_Block</class>
+            </homepage>
+        </blocks>
+        <helpers>
+            <homepage>
+                <class>Ranch_Homepage_Helper</class>
+            </homepage>
+        </helpers>
+    <!--    <page>
+            <layouts>
+                <homepage translate="label">
+                    <label>Ranch Homepage</label>
+                    <template>page/homepage.phtml</template>
+                    <layout_handle>ranch_homepage</layout_handle>
+                </homepage>
+
+            </layouts>
+        </page>-->
+    </global>
+</config>

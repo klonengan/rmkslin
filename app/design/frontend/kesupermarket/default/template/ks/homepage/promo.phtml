@@ -1,0 +1,83 @@
+<?php
+/**
+ * If you want to display products from any specific category
+ */
+$categoryId = 15;
+$category = Mage::getModel('catalog/category')->load($categoryId);
+$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+/**
+ * Getting product collection for a particular category
+ */
+$prodCollection = Mage::getResourceModel('catalog/product_collection')
+    ->addCategoryFilter($category)
+    ->addAttributeToSelect('*');
+
+/**
+ * Applying status and visibility filter to the product collection
+ * i.e. only fetching visible and enabled products
+ */
+Mage::getSingleton('catalog/product_status')
+    ->addVisibleFilterToCollection($prodCollection);
+
+Mage::getSingleton('catalog/product_visibility')
+    ->addVisibleInCatalogFilterToCollection($prodCollection);
+?>
+<div class="container hidden-xs hidden-sm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center><?php echo $this->__('Promotion Products');?></center></h3>
+                </div>
+                <div class="panel-body">
+                    <?php if(!$prodCollection): ?>
+                        <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+                    <?php else: ?>
+
+                        <div class="row">
+                            <div id="owl-demo" class="owl-carousel">
+                                <?php foreach($prodCollection  as $product ) : ?>
+                                <div class="item">
+
+                                        <div class="thumbnail">
+                                            <a href="<?php echo $product->getProductUrl(); ?>" >
+                                            <img src="<?php echo $product->getImageUrl(); ?>" alt="...">
+                                            <div class="caption">
+                                                <p class="title"><?php echo $product->getName(); ?></p>
+                                                <?php if( $product->getFinalPrice() < $product->getPrice() ): ?>
+                                                    <span style="text-decoration: line-through"><?php echo $currency_code.' '.number_format($product->getPrice()); ?></span>
+                                                <?php endif; ?>
+                                                <span><?php echo $currency_code.' '.number_format($product->getFinalPrice()); ?></span>
+                                                <!--<span><?php /*echo $currency_code.' '.number_format($product->getPrice()); */?></span>-->
+                                                <!--<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>-->
+                                            </div>
+                                            <div class="rate-star">
+                                                <?php $summaryData = Mage::getModel('review/review_summary')->load($product->getId()); ?>
+                                                <div class="ratings">
+                                                    <div class="rating-box">
+                                                        <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </a>
+                                        </div>
+
+                                </div>
+                                <?php endforeach; ?>
+
+                            </div>
+
+                            <?php //echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'icon/left-arrow.png'; ?>
+                            <?php //echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'icon/right-arrow.png'; ?>
+                        </div>
+
+                    <?php endif; ?>
+                </div>
+
+                <p class="text-center">
+                    <a href="#" class="btn button-merah text-capitalize"><?php echo $this->__('See all promotion products'); ?></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

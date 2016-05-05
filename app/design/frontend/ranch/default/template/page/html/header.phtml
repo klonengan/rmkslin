@@ -1,0 +1,190 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<?php
+    $session = Mage::getSingleton('core/session')->getStoreInfo();
+    //echo "<pre>";var_dump($session);echo "</pre>"; //echo var_dump($session);
+?>
+<!-- height 33px -->
+<div class="top-background">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7" style="padding-right: 0px;">
+                <div class="website-switcher ">
+                    <ul>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'ranch/index.php'; ?>"><img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/ranch-logo-small.jpg'; ?>" alt="ranch" title="ranch"></a></li>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'farmer/index.php'; ?>"><img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/farmer-logo-small.jpg'; ?>" alt="farmer" title="farmer"></a></li>
+                    </ul>
+                </div>
+                <div class="store-switcher-custom">
+                    <input type="hidden" id="formatbaseurl" value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">
+                    <input type="hidden" id="formatbaseurl2" value="123">
+                    <div class="store-switcher">
+                        <span class="title"><strong>Store : <?php echo $session['selected']['name']; ?></strong></span>
+                        <span class="caret"></span>
+                    </div>
+                    <div class="store-dropdown" style="display: none">
+                        <p>You are now shopping in <?php echo $session['selected']['name'].', '.$session['selected']['regency']; ?> </p>
+                        <hr>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="form-group">
+                                    <input type="hidden" id="brand_id" value="<?php echo $session['selected']['brand_id'] ?>">
+                                    <select id="header-city-switcher" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-right"><a href="#">Switch to Farmers Market?</a></p>
+                        </div>
+                        <div class="clear-fix"></div>
+                        <!--<div class="store-list" id="store-list-header">
+                            <div class="row">
+                                <?php
+/*                                //echo "<pre>";var_dump($session);"</pre>";
+                                //$selectedrow = array_search('selected', $session);
+                                //unset($session[$selectedrow]);
+                                */?>
+                                <?php /*foreach( $session['stores'] as $store => $value ): */?>
+                                    <div class="col-xs-6 col-md-6">
+                                        <a href="#" class="thumbnail">
+                                            <img src="<?php /*echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/brand/logo-01.png'; */?>" alt="">
+                                        </a>
+                                        <center><span><?php /*echo $value['name']; */?></span></center>
+                                    </div>
+                                <?php /*endforeach; */?>
+                            </div>
+                        </div>-->
+                        <hr>
+                        <p>Please note: By switching to Farmer Market, you will lose all products in your shopping cart</p>
+                    </div>
+                </div>
+                <div class="header-help"><span><?php echo $this->__('Need help? Call');?> <?php echo Mage::getStoreConfig('general/store_information/phone'); ?> </span></div>
+            </div>
+
+            <div class="col-md-5" style="padding-left: 0">
+                <ul class="top-header-nav">
+                    <li><a href="">How to Pay</a></li>
+                    <li><a href="">How to Buy</a></li>
+                    <li><a href="">My Favorites</a></li>
+                    <li><a href="">Track My Order</a></li>
+                </ul>
+                <div class="store-language-container " style="position: relative; top: 6px; float: right">
+                    <?php echo $this->getChildHtml('store_language') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="header-background">
+
+    <header id="header">
+        <div class="container">
+            <div class="header-block-1">
+                <div class="col-md-2">
+                    <div class="row">    
+                        <a class="logo" href="<?php echo $this->getUrl('') ?>">
+                            <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="large" />
+                            <img src="<?php echo $this->getLogoSrcSmall() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="small" />
+                        </a>
+                    </div>        
+                </div>
+                <?php // In order for the language switcher to display next to logo on smaller viewports, it will be moved here.
+                      // See app.js for details ?>
+                <!--<div class="store-language-container"></div>-->
+                <!-- Skip Links -->
+                <div class="col-md-10">
+                    <div class="skip-links">
+                        <a href="#header-nav" class="skip-link skip-nav">
+                            <span class="icon"></span>
+                            <span class="label"><?php echo $this->__('Menu'); ?></span></a>
+
+                        <a href="#header-search" class="skip-link skip-search">
+                            <span class="icon"></span>
+                            <span class="label"><?php echo $this->__('Search'); ?></span>
+                        </a>
+                        <div class="">
+                            <div class="account-cart-wrapper">
+                                <a href="<?php echo $this->helper('customer')->getAccountUrl(); ?>" data-target-element="#header-account" class="skip-link skip-account">
+                                    <!--<span class="icon"></span>-->
+                                    <span class="label"><?php echo $this->__('Login / Register'); ?></span>
+                                </a>
+
+                                <!-- Cart -->
+
+                                <div class="header-minicart">
+                                    <?php echo $this->getChildHtml('minicart_head'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+
+                    <div id="header-nav" class="skip-content">
+                        <?php echo $this->getChildHtml('topMenu') ?>
+                    </div>
+
+                    <!-- Search -->
+
+                    <div id="header-search" class="skip-content">
+                        <?php echo $this->getChildHtml('topSearch') ?>
+                    </div>
+
+                    <!-- Account -->
+
+                    <div id="header-account" class="skip-content">
+                        <?php echo $this->getChildHtml('topLinks') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="clear-fix"></div>
+            <div class="header-block-2">
+                <div id="category-menu-title">
+                    <span><label><?php echo $this->__('Category'); ?></label></span>
+                </div>
+                <div class="pull-right">
+                    <ul class="nav nav-pills">
+                        <li><a href=""><?php echo $this->__("Best Selling Product"); ?></a></li>
+                        <li><a href=""><?php echo $this->__("New Products"); ?></a></li>
+                        <li><a href=""><?php echo $this->__("Meat & Poutry"); ?></a></li>
+                        <li><a href=""><?php echo $this->__("Vegetables"); ?></a></li>
+                        <li><a href=""><?php echo $this->__("Our Stores"); ?></a></li>
+                        <li><a href=""><?php echo $this->__("Special Offer"); ?></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+</div>
+<?php echo $this->getChildHtml('topMenu') ?>
+<?php //echo $this->getChildHtml('topContainer'); ?>

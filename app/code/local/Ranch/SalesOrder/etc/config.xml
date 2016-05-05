@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<config>
+
+    <modules>
+        <Ranch_SalesOrder>
+            <version>1.0.0</version>
+        </Ranch_SalesOrder>
+    </modules>
+
+    <global>
+
+        <helpers>
+            <pickerorder>
+                <class>Ranch_SalesOrder_Helper</class>
+            </pickerorder>
+        </helpers>
+
+        <models>
+            <pickerorder>
+                <class>Ranch_SalesOrder_Model</class>
+            </pickerorder>
+        </models>
+
+        <resources>
+            <salesorder_setup>
+                <setup>
+                    <module>Ranch_SalesOrder</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </salesorder_setup>
+            <salesorder_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </salesorder_write>
+            <salesorder_write>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </salesorder_write>
+        </resources>
+
+    </global>
+    <adminhtml>
+        <events>
+            <adminhtml_block_html_before>
+                <observers>
+                    <pickerorder>
+                        <class>Ranch_SalesOrder_Model_Observer</class>
+                        <method>coreBlockAbstractToHtmlBefore</method>
+                    </pickerorder>
+                </observers>
+            </adminhtml_block_html_before>
+            <sales_order_grid_collection_load_before>
+                <observers>
+                    <ranch_pickerorder_sales_order_grid_collection_load_before>
+                        <class>Ranch_SalesOrder_Model_Observer</class>
+                        <method>salesOrderGridCollectionLoadBefore</method>
+                    </ranch_pickerorder_sales_order_grid_collection_load_before>
+                </observers>
+            </sales_order_grid_collection_load_before>
+        </events>
+    </adminhtml>
+</config>

@@ -1,0 +1,234 @@
+<?php
+/**
+ * Solvingmagento_OneStepCheckout shipping method available methods template
+ *
+ * PHP version 5.3
+ *
+ * @category  Solvingmagento
+ * @package   Solvingmagento_OneStepCheckout
+ * @author    Magento Core Team <core@magentocommerce.com>
+ * @author    Oleg Ishenko <oleg.ishenko@solvingmagento.com>
+ * @copyright Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com), 2014 Oleg Ishenko
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @version   GIT: <0.1.0>
+ * @link      http://www.solvingmagento.com/
+ *
+ */
+?>
+<?php
+/** @var $this Mage_Checkout_Block_Onepage_Shipping_Method_Available */
+
+$shippingRateGroups = $this->getShippingRates(); ?>
+<?php if (!$shippingRateGroups): ?>
+    <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+<?php else: ?>
+    <dl class="sp-methods">
+        <?php
+        $shippingCodePrice = array();
+        $sole = count($shippingRateGroups) == 1;
+        foreach ($shippingRateGroups as $code => $rates): ?>
+        <dt><?php //echo $this->escapeHtml($this->getCarrierName($code)) ?></dt>
+        <dd>
+            <ul>
+                <?php
+                $sole = $sole && count($rates) == 1;
+                foreach ($rates as $rate): ?>
+                    <?php $shippingCodePrice[] = "'" . $rate->getCode() . "':" . (float) $rate->getPrice(); ?>
+                        <li>
+                            <?php if ($rate->getErrorMessage()): ?>
+                                <ul class="messages">
+                                    <li class="error-msg">
+                                        <ul>
+                                            <li>
+                                                <?php echo $this->escapeHtml($rate->getErrorMessage()) ?>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            <?php else: ?>
+                                <?php if ($sole) : ?>
+                                    <span class="no-display">
+                                        <input
+                                            name="shipping_method"
+                                            type="radio"
+                                            value="<?php echo $rate->getCode() ?>"
+                                            id="s_method_<?php echo $rate->getCode() ?>"
+                                            checked="checked" />
+                                    </span>
+                                <?php else: ?>
+                                <input
+                                    name="shipping_method"
+                                    type="radio"
+                                    value="<?php echo $rate->getCode() ?>"
+                                    id="s_method_<?php echo $rate->getCode() ?>"
+                                    <?php if($rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?>
+                                    class="radio"/>
+
+                                <?php if ($rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                    <script type="text/javascript">
+                                        //<![CDATA[
+                                        lastPrice = <?php echo (float)$rate->getPrice(); ?>;
+                                        //]]>
+                                    </script>
+                                <?php endif; ?>
+
+                                <?php endif; ?>
+                                <label for="s_method_<?php echo $rate->getCode() ?>">
+                                    <?php echo $this->escapeHtml($rate->getMethodTitle()) ?>
+                                    <?php $excl = $this->getShippingPrice(
+                                        $rate->getPrice(),
+                                        $this->helper('tax')->displayShippingPriceIncludingTax()
+                                    ); ?>
+                                    <?php $incl = $this->getShippingPrice($rate->getPrice(), true); ?>
+                                    <?php //echo $excl; ?>
+                                    <?php if ($this->helper('tax')->displayShippingBothPrices() && $incl != $excl): ?>
+                                        (<?php echo $this->__('Incl. Tax'); ?> <?php //echo $incl; ?>)
+                                    <?php endif; ?>
+                                </label>
+
+                                <?php if($rate->getCode() == 'ranch_homedelivery_ranch_homedelivery') : ?>
+                                    <div class="shipping-content" id="ranch_homedelivery_ranch_homedelivery" style="padding-bottom:15px; padding-left: 40px;">
+                                        <?php
+                                        //$today      = date("d M Y");
+                                        $today      = date('d M Y',strtotime(' +7 hours '));
+                                        $nextday    = date("d M Y",strtotime($today . ' +1 day'));
+                                        $timeslot   = Mage::helper('collecttimeslot');
+                                        ?>
+                                        <p><i><?php echo $this->__('please select time to deliver the orders');?></i></p>
+                                        <div class="form-group">
+                                            <select id="deliver_collect_date" name="collectinstore-date" class="form-control" style="width: 200px; !important;">
+                                                <option value="0">Select Date</option>
+                                                <option value="<?php echo date("Y-m-d",strtotime(' +7 hours ')); ?>" timetype="today" ><?php echo $today; ?></option>
+                                                <option value="<?php echo date("Y-m-d",strtotime(' +7 hours ')) ?>" timetype="nextday" ><?php echo $nextday; ?></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0; ">
+                                            <select id="delivercollecttime" name="collectinstore-time" class="form-control" style="width: 200px; margin-left: 0; margin-top: 10px; !important;">
+                                                <option value="0">Select Time</option>
+                                            </select>
+                                        </div>
+                                        <script>
+                                            var timedeliveryselector    = $j("#delivercollecttime");
+                                            var dateselector    = $j("#deliver_collect_date");
+                                            var loading         = "<option value=\"\">"+"Loading..."+"</option>";
+                                            $j(dateselector).change(function (){
+                                                var option = $j(this).find('option:selected').val();
+                                                var type   = $j(this).find('option:selected').attr('timetype');
+                                                $j.ajax({
+                                                    method: "POST",
+                                                    url: timeslottUrl+"timeStoreDelivery",
+                                                    data: { 'date' : this.value, 'type': type },
+                                                    beforeSend: function () {
+                                                        $j("#delivercollecttime").html(loading).prop("disabled", true).addClass('select-disabled');
+                                                    },
+                                                    success: function (response) {
+                                                        var result = jQuery.parseJSON(response);
+                                                        var options = result.html;
+                                                        $j("#delivercollecttime").html(options).prop("disabled", false).removeClass('select-disabled');
+
+                                                    },
+                                                    error: function () {
+                                                        console.log('failed');
+                                                    }
+                                                });
+                                            });
+
+                                            $j(timedeliveryselector).change(function (){
+                                                var date   = $j("#deliver_collect_date").val();
+                                                var option = $j(this).find('option:selected').val();
+                                                var type   = $j(this).find('option:selected').attr('timetype');
+                                                //alert(date +' -  '+ option);
+                                                $j.ajax({
+                                                    method: "POST",
+                                                    url: timeslottUrl+"checkAvailableTime",
+                                                    data: { 'date': date, 'time': option },
+                                                    beforeSend: function () {
+                                                        $j("#deliver_collecttime").html(loading).prop("disabled", true).addClass('select-disabled');
+                                                    },
+                                                    success: function (response) {
+                                                        var result = jQuery.parseJSON(response);
+                                                        var options = result.html;
+                                                        $j("#deliver_collecttime").html(options).prop("disabled", false).removeClass('select-disabled');
+
+                                                    },
+                                                    error: function () {
+                                                        console.log('failed');
+                                                    }
+                                                });
+                                            });
+
+                                        </script>
+                                    </div>
+                                <?php endif;?>
+
+                                <?php if($rate->getCode() == 'collectinstore_collectinstore') : ?>
+                                    <div class="shipping-content" id="collectinstore_collectinstore" style="padding-bottom:15px; padding-left: 40px;">
+                                        <?php
+                                            $today      = date('d M Y',strtotime(' +7 hours '));
+                                            $nextday    = date("d M Y",strtotime($today . ' +1 day'));
+                                            $timeslot   = Mage::helper('collecttimeslot');
+                                        ?>
+                                        <p><i><?php echo $this->__('please select time to pickup the orders');?></i></p>
+                                        <div class="form-group">
+                                            <select id="collect_date" name="collectinstore-date" class="form-control" style="width: 200px; !important;">
+                                                <option value="0">Select Date</option>
+                                                <option value="<?php echo date("d/M/Y", strtotime($today)) ?>" timetype="today" ><?php echo $today; ?></option>
+                                                <option value="<?php echo date("d/M/Y", strtotime($today . ' +1 day')) ?>" timetype="nextday" ><?php echo $nextday; ?></option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" style="margin-bottom: 0; ">
+                                            <select id="collecttime" name="collectinstore-time" class="form-control" style="width: 200px; margin-left: 0; margin-top: 10px; !important;">
+                                                <option value="0">Select Time</option>
+                                            </select>
+                                        </div>
+                                        <script>
+                                            var dateselector    = $j("#collect_date");
+                                            var loading         = "<option value=\"\">"+"Loading..."+"</option>";
+                                            $j(dateselector).change(function (){
+                                                var option = $j(this).find('option:selected').val();
+                                                var type   = $j(this).find('option:selected').attr('timetype');
+                                                $j.ajax({
+                                                    method: "POST",
+                                                    url: timeslottUrl+"timeStoreDelivery",
+                                                    data: { 'date' : this.value, 'type': type },
+                                                    beforeSend: function () {
+                                                        $j("#collecttime").html(loading).prop("disabled", true).addClass('select-disabled');
+                                                    },
+                                                    success: function (response) {
+                                                        var result = jQuery.parseJSON(response);
+                                                        var options = result.html;
+                                                        $j("#collecttime").html(options).prop("disabled", false).removeClass('select-disabled');
+
+                                                    },
+                                                    error: function () {
+                                                        console.log('failed');
+                                                    }
+                                                });
+                                            });
+                                        </script>
+
+                                        <?php $collectinstore = Mage::getStoreConfig('carriers/collectinstore'); ?>
+                                        <div style="padding-top:20px;">
+                                            <b><span>Collect at :</span></b><br>
+                                            <?php echo ($collectinstore['address_company'] == '' ) ? "" : $collectinstore['address_company']."</br>" ; ?>
+                                            <?php echo ($collectinstore['address_line1'] == '' ) ? "" : $collectinstore['address_line1']."</br>" ; ?>
+                                            <?php echo ($collectinstore['address_city'] == '' ) ? "" : $collectinstore['address_city']."</br>" ; ?>
+                                            <?php echo ($collectinstore['address_region'] == '' ) ? "" : $collectinstore['address_region']."</br>" ; ?>
+                                            <?php echo ($collectinstore['address_telephone'] == '' ) ? "" : $collectinstore['address_telephone']."</br>" ; ?>
+                                            <?php echo ($collectinstore['address_zipcode'] == '' ) ? "" : $collectinstore['address_zipcode']."</br>" ; ?>
+                                        </div>
+                                    </div>
+                                <?php else : ?>
+                                    <?php echo ""; ?>
+                                <?php endif; ?>
+
+                            <?php endif ?>
+
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </dd>
+        <?php endforeach; ?>
+    </dl>
+<?php endif; ?>

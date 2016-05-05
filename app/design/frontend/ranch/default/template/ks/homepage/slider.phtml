@@ -1,0 +1,46 @@
+<div id="main-banner">
+    <div id="banner-top">
+        <img class="img-responsive" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/top_banner.jpg';?>"/>
+    </div>
+    <div class="clear-fix"></div>
+    <div id="banner-bottom">
+        <div class="main-slider">
+            <div id="top-banner-slideshow" class="owl-carousel">
+                <div class="item">
+                    <a href="{{config path="web/secure/base_url"}}accessories/eyewear.html">
+                        <img class="img-responsive" src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/main_banner.png'; ?>" alt="An eye for detail - Click to Shop Eye Wear" />
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="{{config path="web/secure/base_url"}}accessories/eyewear.html">
+                        <img class="img-responsive" src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/main_banner.png'; ?>" alt="An eye for detail - Click to Shop Eye Wear" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="right-banner" class="pull-right">
+            <div class="banner-box">
+                <img class="img-responsive" src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/leftbanner_1.jpg'; ?>" alt="An eye for detail - Click to Shop Eye Wear" />
+            </div>
+            <div class="banner-box">
+                <img class="img-responsive" src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/banner_left_2.png'; ?>" alt="An eye for detail - Click to Shop Eye Wear" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    /* Reset the .std styles */
+    .std ul.products-grid li {
+        list-style: none;
+        margin-left: 0;
+    }
+    .std ul.products-grid li .product-info {
+        padding-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+    .widget-new-products h2 {
+        text-align: center;
+    }
+</style>

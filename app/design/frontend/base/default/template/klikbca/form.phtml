@@ -1,0 +1,43 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+?>
+
+<?php
+$_code = $this->getMethodCode();
+
+$expired = Mage::getStoreConfig('payment/klikbca/order_expired');
+
+?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+	<li>
+		<img src="<?php echo $this->getSkinUrl('images/klikbca.png') ?>"/>
+	</li>
+	<li>
+		
+		<form action="" >
+		<li>
+			<label for="<?php echo $_code ?>_klikbcaid" class="required"><em>*</em><?php echo $this->__('Input Your KlikBCA ID') ?></label>
+			<div class="input-box">
+				<input type="text" id="<?php echo $_code ?>_klikbcaid" name="payment[klikbcaid]" class="required-entry IsEmty"/>
+			</div>
+		</li>
+		</form>
+	</li>
+	<li>
+	<label><?php echo $this->__('1. UserID klikBCA yang anda masukkan adalah user ID KlikBCA yang terdaftar dan aktif.') ?></label>
+	<label><?php echo $this->__('2. Harap lakukan pembayaran melalui KlikBCA (www.klikbca.com) dengan menggunakan user ID yang sama.') ?></label>
+	<label><?php echo $this->__('3. Lakukan pembayaran anda paling lambat '.$expired.' jam setelah pemesanan anda.')  ?></label>
+	<label><?php echo $this->__('3. Transaksi anda akan dibatalkan (kedaluarsa) jika anda tidak melakukan pembayaran dalam batas waktu yg ditentukan.')  ?></label>
+	</li>
+</ul>
+
+<div>
+    <?php echo $this->getMethod()->getConfigData('message');?>
+</div>

@@ -1,0 +1,93 @@
+<?php
+$entity = 'catalog_product';
+$code   = 'highlight';
+$attr   =  Mage::getResourceModel('catalog/eav_attribute')->loadByCode($entity,$code);
+if ($attr->getId()) :
+    $attr_id = $attr['default_value'];
+    $products = Mage::getModel('catalog/product')->getCollection();
+    $products->addAttributeToSelect('*');
+    $products->addAttributeToFilter('highlight', $attr_id);
+    $products->setPageSize(4);
+endif;
+$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="star"></span>Highlighted Product</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <?php foreach( $products  as $product ){ ?>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="thumbnail">
+                                <a href="<?php echo $product->getProductUrl(); ?>" >
+                                <img src="<?php echo $product->getImageUrl(); ?>" alt="...">
+                                <div class="caption">
+                                    <p class="title"><?php echo $product->getName(); ?></p>
+                                    <span><?php echo $currency_code.' '.number_format($product->getPrice()); ?></span>
+                                    <!--<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>-->
+                                </div>
+                                <div class="rate-star"><?php echo $this->getReviewsSummaryHtml($product, 'short');?></div>
+                                </a>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Recently Viewed Items</h3>
+                </div>
+                <div class="panel-body">
+                    <?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
+                        <div class=" most_viewed">
+                            <div class="mv_title"><?php echo $this->__('These Products Are Popular Right Now!') ?></div>
+                            <?php $_collectionSize = 5;//count($_products->getItems()); echo $_collectionSize; ?>
+                            <ul class="products-grid" id="products-grid-table">
+                                <?php $i=1; foreach ($_products->getItems() as $_product): ?>
+                                    <li id="td_<?php echo $i;?>" <?php if($i%5==0 or $i==$_collectionSize){echo 'class="last"';} ?> >
+                                        <div id="cont_<?php echo $i;?>">
+                                            <a class="product-image" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+                                                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+                                            </a>
+                                            <h3 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3>
+                                            <div class="a-center">
+                                                <?php if($_product->getRatingSummary()): ?>
+                                                    <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                                                <?php endif; ?>
+                                                <?php echo $this->getPriceHtml($_product, true) ?>
+                                                <?php if($_product->isSaleable()): ?>
+                                                    <button class="button" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><span><?php echo $this->__('Add to Cart') ?></span></span></span></button>
+                                                    <div class="clear"></div>
+                                                <?php else: ?>
+                                                    <p class="availability"><span class="out-of-stock"><?php echo $this->__('Out of stock') ?></span></p>
+                                                    <div class="clear"></div>
+                                                <?php endif; ?>
+                                                <ul class="add-to-links">
+                                                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                                                        <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                                                    <?php endif; ?>
+                                                    <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                                                        <li class="last"><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
+                                                    <?php endif; ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <?php $i++; endforeach; $kol = $_collectionSize; ?>
+                            </ul>
+                        </div>
+                    <?php else :?>
+                        <p>No viewed product yet</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

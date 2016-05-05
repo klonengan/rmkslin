@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+-->
+<config>
+	<modules>
+		<Faspay_Sakuku>
+			<version>2.0.1</version>
+		</Faspay_Sakuku>
+	</modules>
+	<global>
+		<models>
+			<Sakuku>
+				<class>Faspay_Sakuku_Model</class>
+			</Sakuku>
+		</models>
+        <helpers>
+            <Sakuku>
+                <class>Faspay_Sakuku_Helper</class>
+            </Sakuku>
+        </helpers>
+		<blocks>
+			<Sakuku>
+				<class>Faspay_Sakuku_Block</class>
+			</Sakuku>
+		</blocks>
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<payment_tenor>
+					<to_order_payment>*</to_order_payment>
+				</payment_tenor>
+			</sales_convert_quote_payment>
+		</fieldsets>
+		<resources>
+			<Sakuku_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</Sakuku_write>
+			<Sakuku_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</Sakuku_read>
+		</resources>
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<Sakuku>
+					<file>Sakuku.xml</file>
+				</Sakuku>
+			</updates>
+		</layout>
+		<routers>
+			<Sakuku>
+				<use>standard</use>
+				<args>
+					<module>Faspay_Sakuku</module>
+					<frontName>Sakuku</frontName>
+				</args>
+			</Sakuku>
+		</routers>
+	</frontend>
+	
+	<default>
+		<payment>
+			<Sakuku>
+				<active>0</active>
+				<model>Sakuku/704</model>
+				<order_status>1</order_status>
+				<title>BCA Sakuku</title>
+				<server_stage>1</server_stage>
+				<order_expire>1</order_expire>
+				<sort_order>23</sort_order>
+			</Sakuku>	
+		</payment>
+	</default> 
+</config>

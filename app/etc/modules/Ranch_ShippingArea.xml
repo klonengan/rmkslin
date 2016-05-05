@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ranch_ShippingArea>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Ranch_ShippingArea>
+    </modules>
+</config>

@@ -1,0 +1,65 @@
+<?php
+$_producthighlight = Mage::helper('homepage')->highlighthome();
+
+$curr = Mage::app()->getStore()->getCurrentCurrencyCode();
+?>
+<div class="col-md-9 hidden-xs hidden-sm">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="star"></span>Highlighted Product</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <?php foreach( $_producthighlight  as $product ){ ?>
+                <?php
+                    //$_product   = Mage::getModel('catalog/product')->load($product->getId());
+                    //$stock      = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product); ?>
+                <?php //echo "<pre>"; print_r($stock->getData()); echo "</pre>";?>
+                <div class="col-sm-6 col-md-3">
+                    <?php $attributeName = $product->getAttributeText('highlight');  ?>
+                    <?php
+                        $icon = '';
+                        switch($attributeName)
+                        {
+                            case 'Sale';
+                                $icon = "highlight_new";
+                                break;
+                            case 'New';
+                                $icon = "highlight_sale";
+                                break;
+                            case 'Best Seller';
+                                $icon = "highlight_seller";
+                                break;
+                        }
+                    ?>
+                    <div class="thumbnail">
+                        <div class="prdt-overlay"><a class="button button-merah" href="<?php echo $product->getProductUrl(); ?>">view detail</a></div>
+                        <a class="highl-prdt" href="<?php echo $product->getProductUrl(); ?>" >
+                            <span class="<?php echo $icon; ?>"></span>
+                            <img src="<?php echo $product->getImageUrl(); ?>" alt="<?php echo $product->getName(); ?>">
+                        <div class="caption">
+                            <p class="title"><?php echo $product->getName(); ?></p>
+                            <?php /*echo $product->getStockItem()->getQty(); */?>
+                            <?php echo $this->getChildHtml('product_type_availability'); ?>
+                            <?php //echo floatval(Mage::getModel('cataloginventory/stock_item')->loadByProduct($product)->getQty()); ?>
+                            <?php if( $product->getFinalPrice() < $product->getPrice() ): ?>
+                                <span style="text-decoration: line-through"><?php echo $curr.' '.number_format($product->getPrice()); ?></span>
+                            <?php endif; ?>
+                            <span><?php echo $curr.' '.number_format($product->getFinalPrice()); ?></span>
+                        </div>
+                        <div class="rate-star">
+                            <?php $summaryData = Mage::getModel('review/review_summary')->load($product->getId()); ?>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

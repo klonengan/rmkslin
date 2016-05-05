@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/bootstrap.min.css</name>
+            </action>
+           <!-- <action method="addItem">
+                <type>skin_css</type>
+                <name>css/custom.css</name>
+            </action>-->
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/bootstrap.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/custom.js</name>
+            </action>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate"><template>ks/template/landingpage.phtml</template></action>
+        </reference>
+    </default>
+
+    <ks_landingpage_index_index>
+
+        <remove name="header"/>
+        <remove name="footer"/>
+
+        <reference name="content">
+            <block type="landingpage/format" name="landingpage" template="ks/landingpage/format.phtml" />
+        </reference>
+
+    </ks_landingpage_index_index>
+
+</layout>

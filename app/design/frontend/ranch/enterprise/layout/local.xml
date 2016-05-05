@@ -1,0 +1,331 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>lib/jquery-ui/jquery-ui.min.css</name></action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/bootstrap.min.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/styles.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/custom.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/owl.carousel.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/owl.theme.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/bootstrap-select.min.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/kemana.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/bootstrap.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/custom.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/owl.carousel.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/enterprise/bootstrap-select.min.js</name>
+            </action>
+            <action method="addJs"><script>lib/jquery-ui/jquery-ui.min.js</script></action>
+        </reference>
+
+        <reference name="header">
+            <block type="core/template" name="sidebarMenu" as="sidebarMenu" template="page/html/sidebarmenu.phtml" />
+        </reference>
+
+        <reference name="store_language">
+            <action method="setTemplate">
+                <template>page/switch/flags.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="footer">
+            <remove name="store_switcher"/>
+            <remove name="footer_links"/>
+            <remove name="footer_links2"/>
+
+            <block type="cms/block" name="cms_footer_links_help" after="cms_footer_links">
+                <action method="setBlockId"><block_id>footer_help</block_id></action>
+            </block>
+
+            <block type="cms/block" name="cms_footer_links_contact" after="cms_footer_links_help">
+                <action method="setBlockId"><block_id>footer_contact</block_id></action>
+            </block>
+
+            <block type="newsletter/subscribe" name="footer.newsletter" as="newsletter" template="newsletter/subscribe.phtml"/>
+
+        </reference>
+
+        <remove name="sale.reorder.sidebar"></remove>
+
+
+
+    </default>
+
+    <!-- Landing Page -->
+    <ranch_landingpage_index_index>
+
+        <reference name="root">
+            <action method="setTemplate"><template>ks/template/landingpage.phtml</template></action>
+        </reference>
+
+        <remove name="header"/>
+        <remove name="footer"/>
+
+        <reference name="content">
+            <block type="landingpage/format" name="landingpage" template="ks/landingpage/format.phtml" />
+        </reference>
+
+    </ranch_landingpage_index_index>
+
+    <cms_index_index>
+
+        <reference name="content">
+
+            <block type="core/template" name="top.banner" as="topBanner" template="ks/homepage/banner.phtml">
+                <block type="core/template" name="slider" template="ks/homepage/slider.phtml" />
+            </block>
+
+            <block type="core/template" name="category-mobile" template="ks/homepage/category-mobile.phtml" />
+            <block type="core/template" name="promo-highlight-mobile" template="ks/homepage/promo-highlight-mobile.phtml" />
+
+            <block type="core/template" name="highlight" as="highlight" template="ks/homepage/highlight.phtml">
+                <block type="core/template" as="highlightlist" name="highlightlist" template="ks/homepage/highlight-list.phtml" />
+                <block type="core/template" as="mosthits" name="mosthits" template="ks/homepage/mostviewed.phtml" />
+                <block type="reports/product_viewed" as="productviewed" name="productviewed" template="reports/product_viewed.phtml" />
+            </block>
+
+            <block type="core/template" name="promobanner" template="ks/homepage/promo_banner.phtml" />
+            <block type="core/template" name="promo" template="ks/homepage/promo.phtml" />
+
+        </reference>
+
+    </cms_index_index>
+
+
+    <checkout_cart_index>
+        <remove name="checkout.cart.shipping" />
+    </checkout_cart_index>
+
+    <catalog_product_view>
+
+        <reference name="product.info">
+
+            <block type="catalog/product_view_attributes" name="product_details" template="catalog/product/view/attributes.phtml">
+                <action method="addToParentGroup"><group>detailed_info</group></action>
+                <action method="setTitle" translate="value"><value>Recipe</value></action>
+            </block>
+
+            <block type="review/product_view_list" name="product.reviews.list" as="reviews_list_tab" template="review/product/view/list.phtml">
+                <action method="addToParentGroup"><group>detailed_info_2</group></action>
+                <action method="setTitle" translate="value"><value>Reviews</value></action>
+            </block>
+
+            <block type="review/form" name="product.review.form" as="review_form">
+                <action method="addToParentGroup"><group>detailed_info_2</group></action>
+                <action method="setTitle" translate="value"><value>Write Reviews</value></action>
+                <block type="page/html_wrapper" name="product.review.form.fields.before" as="form_fields_before" translate="label">
+                    <label>Review Form Fields Before</label>
+                </block>
+            </block>
+
+            <block type="catalog/product_view_attributes" name="product.attributes" as="additional" template="catalog/product/view/nutrition.phtml">
+                <action method="addToParentGroup"><group>detailed_info</group></action>
+                <action method="setTitle" translate="value"><value>Nutrition Fact</value></action>
+            </block>
+
+
+        </reference>
+        <remove name="catalog.product.related"/>
+        <remove name="product.info.sharing"/>
+        <remove name="product.info.additional"/>
+
+    </catalog_product_view>
+    <!--
+        add default crumbs to display in all the customer account pages
+        this will add Home / My Account crubms.
+    -->
+
+    <!-- contact -->
+    <contacts_index_index>
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbName>Home</crumbName>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbName>Contact</crumbName>
+                <crumbInfo>
+                    <label>Contact Us</label>
+                    <title>Contact</title>
+                </crumbInfo>
+            </action>
+        </reference>
+    </contacts_index_index>
+
+    <customer_account translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbName>Home</crumbName>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/home</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbName>My Account</crumbName>
+                <crumbInfo>
+                    <label>My Account</label>
+                    <title>My Account</title>
+                    <link>/customer/account/</link>
+                </crumbInfo>
+            </action>
+        </reference>
+    </customer_account>
+
+
+    <!-- dashboard -->
+    <customer_account_index translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbName>Dashboard</crumbName>
+                <crumbInfo>
+                    <label>Account Dashboard</label>
+                    <title>Dashboard</title>
+                </crumbInfo>
+            </action>
+        </reference>
+    </customer_account_index>
+
+    <!-- account information -->
+    <customer_account_edit translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>Account Information</crumbname>
+                <crumbinfo>
+                    <label>Account Information</label>
+                    <title>Account Information</title>
+                </crumbinfo>
+            </action>
+        </reference>
+    </customer_account_edit>
+
+    <!-- address book -->
+    <customer_address_index translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>Address Book</crumbname>
+                <crumbinfo>
+                    <label>Address Book</label>
+                    <title>Address Book</title>
+                </crumbinfo>
+            </action>
+        </reference>
+    </customer_address_index>
+
+    <!-- order -->
+    <sales_order_history translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>My Orders</crumbname>
+                <crumbinfo>
+                    <label>My Orders</label>
+                    <title>My Orders</title>
+                </crumbinfo>
+            </action>
+        </reference>
+    </sales_order_history>
+
+    <!-- order single -->
+    <sales_order_view translate="label">
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>My Orders</crumbname>
+                <crumbinfo>
+                    <label>My Orders</label>
+                    <title>My Orders</title>
+                    <link>/sales/order/history/</link>
+                </crumbinfo>
+            </action>
+            <action method="addCrumb">
+                <crumbname>Order Detail</crumbname>
+                <crumbinfo>
+                    <label>Order Detail</label>
+                    <title>Order Detail</title>
+                </crumbinfo>
+            </action>
+        </reference>
+    </sales_order_view>
+
+    <catalog_category_default>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+    </catalog_category_default>
+
+    <catalog_category_view>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <remove name=""/>
+    </catalog_category_view>
+
+    <checkout_onepage_failure>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </checkout_onepage_failure>
+
+    <checkout_onepage_success>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </checkout_onepage_success>
+
+    <catalog_category_layered>
+        <block type="core/template" name="layeredcatnav" template="catalog/navigation/left.phtml"/>
+    </catalog_category_layered>
+
+    <catalogsearch_result_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+    </catalogsearch_result_index>
+
+  <!--  <checkout_onepage_index translate="label">
+        <reference name="root">
+            <action method="setTemplate"><template>page/checkout.phtml</template></action>
+        </reference>
+        <remove name="right"/>
+    </checkout_onepage_index>-->
+
+    <checkout_cart_index>
+        <remove name="checkout.cart.crosssell"/>
+    </checkout_cart_index>
+</layout>

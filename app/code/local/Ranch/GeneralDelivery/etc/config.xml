@@ -1,0 +1,31 @@
+<config>
+    <modules>
+        <Ranch_GeneralDelivery>
+            <module>0.0.1</module>
+        </Ranch_GeneralDelivery>
+    </modules>
+    <global>
+        <models>
+            <ranch_generaldelivery>
+                <class>Ranch_GeneralDelivery_Model</class>
+            </ranch_generaldelivery>
+        </models>
+        <helpers>
+            <ranch_generaldelivery>
+                <class>Ranch_GeneralDelivery_Helper</class>
+            </ranch_generaldelivery>
+        </helpers>
+    </global>
+    <default>
+        <carriers>
+            <ranch_generaldelivery>
+                <active>0</active>
+                <sallowspecific>1</sallowspecific>
+                <model>ranch_generaldelivery/carrier</model>
+                <name>General Delivery</name>
+                <title>General Delivery</title>
+                <sort_order>10</sort_order>
+            </ranch_generaldelivery>
+        </carriers>
+    </default>
+</config>

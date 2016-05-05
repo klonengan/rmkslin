@@ -1,0 +1,17 @@
+<!-- BEGIN website switcher -->
+<label for="select-webiste">Select Format:</label>
+<select id="website-changer" onChange="document.location=this.options[selectedIndex].value">
+    <?php
+    $websites = Mage::getModel('core/website')->getCollection();
+    foreach($websites as $website)
+    {
+        $default_store = $website->getDefaultStore();
+        $url_obj = new Mage_Core_Model_Url();
+        $default_store_path = $url_obj->getBaseUrl(array('_store'=> $default_store->getCode()));
+    ?>
+        <option <?php if(strstr($this->helper('core/url')->getCurrentUrl(), $default_store_path)):?>selected="selected"<?php endif; ?> value="<?php echo $default_store_path ?>"><?php echo $website->getName()?></option>
+    <?php
+    }
+    ?>
+</select>
+<!-- END website switcher -->

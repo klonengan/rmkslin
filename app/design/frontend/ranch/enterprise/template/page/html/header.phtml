@@ -1,0 +1,235 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<?php
+    $session = Mage::getSingleton('core/session')->getStoreInfo();
+?>
+<script>
+    var baseUrl = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>";
+    var formatUrl = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'format/index/'; ?>";
+    var timeslottUrl = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'timeslot/index/'; ?>";
+</script>
+<!-- height 33px -->
+
+<?php echo $this->getChildHtml('sidebarMenu'); ?>
+<div class="top-background hidden-sm hidden-xs">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-8" style="padding-right: 0px;">
+                <div class="website-switcher ">
+                    <ul>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'ranch/index.php'; ?>"><img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/ranch-logo-small.jpg'; ?>" alt="ranch" title="ranch"></a></li>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'farmer/index.php'; ?>"><img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/farmer-logo-small.jpg'; ?>" alt="farmer" title="farmer"></a></li>
+                    </ul>
+                </div>
+                <?php echo $this->getChildHtml('storeswitcher') ?>
+
+                <div class="header-help"><span class="header-help-text"><?php echo $this->__('Need help? Call');?> </span> <span class="header-help-number"><i class="fa fa-phone" aria-hidden="true"></i> <?php echo Mage::getStoreConfig('general/store_information/phone'); ?></span></div>
+            </div>
+
+            <div class="col-lg-5 col-md-4" style="padding-left: 0">
+                <ul class="top-header-nav">
+                    <li class="hidden-md"><a href=""><?php echo $this->__('How to Pay'); ?></a></li>
+                    <li class="hidden-md"><a href=""><?php echo $this->__('How to Buy'); ?></a></li>
+                    <li><a href="<?php echo $this->getUrl('wishlist');?>"><?php echo $this->__('My Favorites'); ?></a></li>
+                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'trackorder/index'; ?>"><?php echo $this->__('Track My Order'); ?></a></li>
+                </ul>
+                <div class="store-language-container " style="position: relative; top: 6px; float: right; width: 60px;">
+                    <?php echo $this->getChildHtml('store_language') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header-background">
+    <header id="header" class="hidden-sm hidden-xs">
+        <div class="container">
+            <div class="header-block-1">
+                <div class="col-md-2">
+                    <div class="row">
+                        <a class="logo" href="<?php echo $this->getUrl('') ?>">
+                            <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="large" />
+                            <img src="<?php echo $this->getLogoSrcSmall() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="small" />
+                        </a>
+                    </div>
+                </div>
+                <?php // In order for the language switcher to display next to logo on smaller viewports, it will be moved here.
+                      // See app.js for details ?>
+                <!--<div class="store-language-container"></div>-->
+                <!-- Skip Links -->
+                <div class="col-md-10 ">
+                    <div class="skip-links_">
+                      <!--  <a href="#header-nav" class="skip-link skip-nav">
+                            <span class="icon"></span>
+                            <span class="label"><?php /*echo $this->__('Menu'); */?></span></a>
+
+                        <a href="#header-search" class="skip-link skip-search">
+                            <span class="icon"></span>
+                            <span class="label"><?php /*echo $this->__('Search'); */?></span>
+                        </a>-->
+                        <div class="hidden-sm hidden-xs">
+                            <div class="account-cart-wrapper">
+                                <?php
+                                    $name = Mage::getSingleton('customer/session')->getCustomer();
+                                    $islogin = $name->getEmail();
+                                ?>
+                                <?php if (!$islogin): ?>
+                                    <!-- user not login -->
+                                    <a href="<?php echo Mage::getUrl('customer/account/login'); ?>"
+                                       class="button button-login" >
+                                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                        <span class="label"><?php echo $this->__('Login / Register'); ?></span>
+                                    </a>
+                                <?php else: ?>
+                                    <!-- user login -->
+                                    <a href="#" class="skip-link skip-account btn-skip-account">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <span class="label"><?php echo $this->__('My Account'); ?> </span>
+                                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </a>
+                                    <script>
+                                        jQuery(document).ready(function(){
+                                            var timerCount = 300;
+                                            var idTimer = null;
+
+                                            jQuery('.btn-skip-account')
+                                                .mouseenter(function(){
+                                                    if(idTimer == null){
+                                                        jQuery('#header-account').addClass("skip-active");
+                                                    }else{
+                                                        clearTimeout(idTimer);
+                                                        idTimer == null;
+                                                    }
+                                                })
+                                                .mouseleave(function(){
+                                                    if(idTimer != null){
+                                                        clearTimeout(idTimer);
+                                                        idTimer == null;
+                                                    }
+                                                    idTimer = setTimeout(function(){
+                                                        jQuery('#header-account').removeClass("skip-active");
+                                                        idTimer = null;
+                                                    },timerCount)
+                                                });
+
+                                            jQuery('#header-account')
+                                                .mouseenter(function(){
+                                                    if(idTimer == null){
+                                                        jQuery('#header-account').addClass("skip-active");
+                                                    }else{
+                                                        clearTimeout(idTimer);
+                                                        idTimer == null;
+                                                    }
+                                                })
+                                                .mouseleave(function(){
+                                                    if(idTimer != null){
+                                                        clearTimeout(idTimer);
+                                                        idTimer == null;
+                                                    }
+                                                    idTimer = setTimeout(function(){
+                                                        jQuery('#header-account').removeClass("skip-active");
+                                                        idTimer = null;
+                                                    },timerCount)
+                                                });
+                                        });
+                                    </script>
+                                <?php endif ?>
+                                <!-- Cart -->
+                                <div class="header-minicart">
+                                    <?php echo $this->getChildHtml('minicart_head'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div id="header-nav" class="skip-content">
+                        <?php //echo $this->getChildHtml('topMenu') ?>
+                    </div>
+
+                    <!-- Search -->
+                    <div id="header-search_" class="skip-content_">
+                        <div class="row">
+                        <?php echo $this->getChildHtml('topSearch') ?>
+                        </div>
+                    </div>
+
+                    <!-- Account -->
+                    <div id="header-account" class="skip-content">
+                        <?php echo $this->getChildHtml('topLinks') ?>
+                    </div>
+
+                </div>
+            </div>
+            <div class="clear-fix"></div>
+            <div class="header-block-2 hidden-sm hidden-xs">
+                <div id="category-menu-title">
+                    <span class="cat-menu-list"></span>
+                    <span><label><?php echo $this->__('Category'); ?></label></span>
+                    <span class="cat-menu-arrow"></span>
+                </div>
+
+                <div class="sub-cate-list">
+                    <ul class="nav nav-pills">
+                        <li><a href="#"><?php echo $this->__("Best Selling Product"); ?></a></li>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'index.php/new-product.html'; ?>"><?php echo $this->__("New Products"); ?></a></li>
+                        <li><a href="#"><?php echo $this->__("Meat & Poutry"); ?></a></li>
+                        <li><a href="#"><?php echo $this->__("Vegetables"); ?></a></li>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'storelocator/store'; ?>"><?php echo $this->__("Our Stores"); ?></a></li>
+                        <li class="pull-right"><a href="#" class="active"><?php echo $this->__("Special Offer"); ?></a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php echo $this->getChildHtml('topMenu') ?>
+        </div>
+    </header>
+
+    <header id="header-mobile" class="hidden-md hidden-lg">
+        <div class="container">
+            <div class="row" style="padding: 10px 0">
+                <div style="position: absolute; top: 20px; left: 10px">
+                    <a id="nav-expander" class="button-slide-menu"></a>
+                </div>
+                <div style="width: 170px; margin: 0 auto">
+                    <a class=""  href="<?php echo $this->getUrl('') ?>">
+                        <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="img-responsive" />
+                    </a>
+                </div>
+                <div style="position: absolute; top: 20px; right: 20px">
+<!--                    <span class="button-shop-menu"></span>-->
+                    <?php echo $this->getChildHtml('minicart_head'); ?>
+                </div>
+            </div>
+            <div style="padding-bottom: 10px;">
+                <?php echo $this->getChildHtml('topSearchMobile') ?>
+            </div>
+        </div>
+
+    </header>
+</div>

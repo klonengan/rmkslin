@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+==========================================================================
+*
+*   Modul KS_Club
+*   Version 0.1.0
+*   Created December 16, 2015
+*   Developed by Didi Kusnadi (jalapro08@gmail.com)
+*   Copyright © kemana.com - 2015
+*
+==========================================================================
+-->
+<layout>
+    <!-- admin acl users edit page -->
+    <adminhtml_permissions_user_edit>
+        <reference name="content">
+            <block type="core/template" name="permissions.control" template="warehouse/permission-control.phtml"/>
+        </reference>
+        <reference name="adminhtml.permissions.user.edit.tabs">
+            <block type="kswarehouse/adminhtml_permissions_user_edit_tab_warehouse" name="adminhtml.permissions.user.edit.tab.warehouse"/>
+            <action method="addTabAfter">
+                <id>xwarehouses_section</id>
+                <block>adminhtml.permissions.user.edit.tab.warehouse</block>
+                <after>roles_section</after>
+            </action>
+        </reference>
+    </adminhtml_permissions_user_edit>
+</layout>

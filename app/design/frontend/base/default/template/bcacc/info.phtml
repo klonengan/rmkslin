@@ -1,0 +1,20 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay CC http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+?>
+<?php 
+	echo $this->getMethod()->getTitle() . '<br/>';
+	if ($this->getInfo()->getLastTransId() == '') {
+		echo '<em>' . $this->__('Your payment information will be submitted for processing now, your browser will be redirect to the bank URL. 
+Please do not Press F5 or click on your browser Refresh / Stop / Close button during this process to avoid duplicate payment / errors.') . '</em>';
+	} else {
+		echo $this->__('Faspay Transaction ID: %s', $this->htmlEscape($this->getInfo()->getLastTransId())) . '<br/>';
+	}
+?>
+        

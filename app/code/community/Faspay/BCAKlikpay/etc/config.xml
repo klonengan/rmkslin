@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+-->
+<config>
+	<modules>
+		<Faspay_BCAKlikpay>
+			<version>2.0.1</version>
+		</Faspay_BCAKlikpay>
+	</modules>
+	<global>
+		<models>
+			<BCAKlikpay>
+				<class>Faspay_BCAKlikpay_Model</class>
+			</BCAKlikpay>
+		</models>
+        <helpers>
+            <BCAKlikpay>
+                <class>Faspay_BCAKlikpay_Helper</class>
+            </BCAKlikpay>
+        </helpers>
+		<blocks>
+			<BCAKlikpay>
+				<class>Faspay_BCAKlikpay_Block</class>
+			</BCAKlikpay>
+		</blocks>
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<payment_tenor>
+					<to_order_payment>*</to_order_payment>
+				</payment_tenor>
+			</sales_convert_quote_payment>
+		</fieldsets>
+		<resources>
+			<BCAKlikpay_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</BCAKlikpay_write>
+			<BCAKlikpay_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</BCAKlikpay_read>
+		</resources>
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<BCAKlikpay>
+					<file>BCAKlikpay.xml</file>
+				</BCAKlikpay>
+			</updates>
+		</layout>
+		<routers>
+			<BCAKlikpay>
+				<use>standard</use>
+				<args>
+					<module>Faspay_BCAKlikpay</module>
+					<frontName>BCAKlikpay</frontName>
+				</args>
+			</BCAKlikpay>
+		</routers>
+	</frontend>
+	
+	<default>
+		<payment>
+			<BCAKlikpay>
+				<active>0</active>
+				<model>BCAKlikpay/405</model>
+				<order_status>1</order_status>
+				<title>BCA KlikPay</title>
+				<server_stage>1</server_stage>
+				<order_expire>1</order_expire>
+				<order_status>pending</order_status>
+				<min_price_3_month>0</min_price_3_month>
+				<min_price_6_month>0</min_price_6_month>
+				<min_price_12_month>0</min_price_12_month>
+				<min_price_24_month>0</min_price_24_month>
+				<sort_order>17</sort_order>
+			</BCAKlikpay>	
+		</payment>
+	</default> 
+</config>

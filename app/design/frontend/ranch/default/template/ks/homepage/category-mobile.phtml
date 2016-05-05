@@ -1,0 +1,29 @@
+<?php $_helper = Mage::helper('catalog/category') ?>
+<?php $_categories = $_helper->getStoreCategories(); ?>
+
+<div class="container visible-sm visible-xs">
+    <div class="row category-mobile-shorcut" id="category-mobile-shorcut-header">
+        <div class="col-md-12 nopadding">
+
+            <h1 class="text-center"><span><?php echo $this->__('Category');?></span></h1>
+            <div id="category-mobile-block" style="display: none">
+                <?php if (count($_categories) > 0): ?>
+                    <?php $arr = array(); ?>
+                    <?php foreach($_categories as $key => $_category): ?>
+                        <?php $x = array_push($arr,$_category->getId());?>
+                        <div class="col-sm-6 col-xs-6 padding-3px cat-item cat-item-<?php echo $x; ?>">
+                            <?php $_cat = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+                            <a href="#" class="btn btn-default btn-cat-mob"><?php echo $_cat->getName() ?></a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <div class="clear-fix"></div>
+            <div class="row btn-cat-holder">
+                <div class="col-sm-12 col-xs-12 padding-3px">
+                    <span id="#category-mobile-shorcut-header" class="btn btn-default btn-show-cat-mob"><?php echo $this->__('SHOW ALL CATEGORIES');?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

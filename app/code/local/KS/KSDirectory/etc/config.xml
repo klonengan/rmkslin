@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_KSDirectory
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Configuration of KS Directory
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ */
+ -->
+<config>
+    <modules>
+        <KS_KSDirectory>
+            <version>0.0.1</version>
+        </KS_KSDirectory>
+    </modules>
+    <global>
+        <blocks>
+            <ksdirectory>
+                <class>KS_KSDirectory_Block</class>
+            </ksdirectory>
+        </blocks>
+        <helpers>
+            <ksdirectory>
+                <class>KS_KSDirectory_Helper</class>
+            </ksdirectory>
+        </helpers>
+        <models>
+            <ksdirectory>
+                <class>KS_KSDirectory_Model</class>
+                <resourceModel>ksdirectory_mysql4</resourceModel>
+            </ksdirectory>
+            <ksdirectory_mysql4>
+                <class>KS_KSDirectory_Model_Mysql4</class>   
+                <entities>
+                    <grid>
+                        <table>ks_directory_grid</table>
+                    </grid>
+                    <province>
+                        <table>ks_directory_province</table>
+                    </province>
+                    <regency>
+                        <table>ks_directory_regency</table>
+                    </regency>
+                    <subdistrict>
+                        <table>ks_directory_subdistrict</table>
+                    </subdistrict>
+                    <village>
+                        <table>ks_directory_village</table>
+                    </village>
+                </entities>  
+            </ksdirectory_mysql4>
+        </models>
+        <resources>
+            <ks_directory_setup>
+                <setup>
+                    <module>KS_KSDirectory</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ks_directory_setup>
+            <ksdirectory_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ksdirectory_write>
+            <ksdirectory_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ksdirectory_read>      
+        </resources>
+    </global>
+    <frontend>
+        <routers>
+            <ksdirectory>
+                <use>standard</use>
+                <args>
+                    <module>KS_KSDirectory</module>
+                    <frontName>ksdirectory</frontName>
+                </args>
+            </ksdirectory>
+        </routers>
+        <layout>
+            <updates>
+                <ksdirectory>
+                    <file>ks_ksdirectory.xml</file>
+                </ksdirectory>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <ksdirectory before="Mage_Adminhtml">KS_KSDirectory_Adminhtml</ksdirectory>
+                    </modules>
+                </args>
+          </adminhtml>
+        </routers>
+    </admin>
+</config>    

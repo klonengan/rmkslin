@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ranch_ShippingArea>
+            <version>0.1.0</version>
+        </Ranch_ShippingArea>
+    </modules>
+    <global>
+        <helpers>
+            <shippingarea>
+                <class>Ranch_ShippingArea_Helper</class>
+            </shippingarea>
+        </helpers>
+    </global>
+</config>

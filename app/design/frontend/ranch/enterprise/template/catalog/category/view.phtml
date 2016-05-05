@@ -1,0 +1,120 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @see Mage_Catalog_Block_Category_View
+ */
+?>
+<?php
+    $_helper    = $this->helper('catalog/output');
+    $_category  = $this->getCurrentCategory();
+    $_imgHtml   = '';
+    if ($_imgUrl = $_category->getImageUrl()) {
+        $_imgHtml = '<p class="category-image"><img src="'.$_imgUrl.'" alt="'.$this->escapeHtml($_category->getName()).'" title="'.$this->escapeHtml($_category->getName()).'" /></p>';
+        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+    }
+?>
+<?php
+$banners = Mage::getModel('banner/list')->getCollection();
+$banners->addFieldToFilter('category_id', array('eq'=>$_category->getId()));
+$banners->getSelect()->join( array('c'=> 'ks_banner_type'), 'c.id = main_table.type_id');
+?>
+<div class="category-banner">
+<?php
+    foreach( $banners as $banner )
+    {
+        $imagePath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'/wysiwyg/banner/'.sprintf("%'.03d\n",$banner->getId()).'/'.$banner->getImage();
+        $img = "<img src='".$imagePath."' width='".$banner->getWidth()."' height='".$banner->getHeight()."'/>";
+        echo $img;
+    }
+?>
+</div>
+<div class="page-title category-title">
+    <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+        <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
+    <?php endif; ?>
+    <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
+</div>
+
+<div id="sticky-anchor"></div>
+<div class="kotak-putih-bg-sticky"></div>
+
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+
+<?php if($_imgUrl): ?>
+    <?php echo $_imgHtml ?>
+<?php endif; ?>
+
+<?php if($_description=$this->getCurrentCategory()->getDescription()): ?>
+    <div class="category-description std">
+        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+    </div>
+    <?php endif; ?>
+
+<?php if($this->isContentMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+
+<?php elseif($this->isMixedMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+    <?php echo $this->getProductListHtml() ?>
+
+<?php else: ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php endif; ?>
+
+
+
+<script>
+    function sticky_relocate() {
+        var window_top = jQuery(window).scrollTop();
+        var div_top = jQuery('#sticky-anchor').offset().top;
+
+        if (window_top > div_top) {
+
+            jQuery('.kotak-putih-bg-sticky').addClass('stick-up');
+            jQuery('.block-content').addClass('stick-up');
+            jQuery('.toolbar-sticky').addClass('stick-up');
+            jQuery('.filter-button').addClass('stick-up');
+            jQuery('#sticky-anchor').height(0);
+
+        } else {
+
+            jQuery('.kotak-putih-bg-sticky').removeClass('stick-up');
+            jQuery('.block-content').removeClass('stick-up');
+            jQuery('.toolbar-sticky').removeClass('stick-up');
+            jQuery('.filter-button').removeClass('stick-up');
+            jQuery('#sticky-anchor').height(0);
+        }
+    }
+
+    jQuery(function() {
+        jQuery(window).scroll(sticky_relocate);
+        sticky_relocate();
+    });
+</script>

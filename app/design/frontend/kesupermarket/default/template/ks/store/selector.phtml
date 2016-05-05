@@ -1,0 +1,96 @@
+<!-- Store Selector -->
+<div class="select-store-container">
+    <div class="row">
+        <div class="col-xs-12 info-text">
+            <p class="text-center"><b class="semi">Please select the brand below to continue shopping</b></p>
+        </div>
+        <div class="col-xs-12 select-store-btn-holder">
+            <div class="col-xs-6">
+                <button class="btn select-store-btn active">
+                    <p class="text-center" id="btn-ranch-selector"></p>
+                </button>
+            </div>
+            <div class="col-xs-6">
+                <button class="btn select-store-btn btn-farmers-selector">
+                    <p class="text-center" id="btn-farmers-selector"></p>
+                </button
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 select-store-content">
+
+            <!-- content ranch -->
+            <div class="select-store-ranch-content">
+                <div class="select-city">
+                    <select>
+                        <option value="">All City</option>
+                        <option value="jakarta">Jakarta</option>
+                    </select>
+                </div>
+                <div class="select-store">
+                    <select>
+                        <option value="">Select Ranch Market Store</option>
+                        <option value="jakarta">Pasanggrahan</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- content farmer -->
+            <div class="select-store-farmer-content">
+                <div class="select-city">
+                    <select>
+                        <option value="">All City</option>
+                        <option value="jakarta">Jakarta</option>
+                    </select>
+                </div>
+                <div class="select-store">
+                    <select>
+                        <option value="">Select Farmer Market Store</option>
+                        <option value="jakarta">Pasanggrahan</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- btn submit -->
+            <div class="btn-choose-submit-holder">
+                    <button class="btn button-merah btn-choose-submit">SUBMIT</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function(){
+
+        var btnFarmer = jQuery("#btn-farmers-selector");
+        var btnRanch = jQuery("#btn-ranch-selector");
+        var ctnRanch = jQuery(".select-store-ranch-content");
+        var ctnFarmer = jQuery(".select-store-farmer-content");
+
+        btnRanch.on('click',function(){
+            jQuery(this).parent().addClass("active");
+            jQuery(this).css("background-position","0 0");
+
+            btnFarmer.parent().removeClass("active");
+            btnFarmer.css("background-position","0 20px");
+
+            ctnRanch.show();
+            ctnFarmer.hide();
+        });
+
+        btnFarmer.on('click',function(){
+            jQuery(this).parent().addClass("active");
+            jQuery(this).css("background-position","0 0");
+
+            btnRanch.parent().removeClass("active");
+            btnRanch.css("background-position","0 20px");
+
+            ctnRanch.hide();
+            ctnFarmer.show();
+        });
+
+    });
+</script>
+

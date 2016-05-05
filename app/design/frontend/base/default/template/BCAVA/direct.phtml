@@ -1,0 +1,298 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+	$mageFilename = 'app/Mage.php';
+	require_once $mageFilename;
+	#Mage::setIsDeveloperMode(true);
+	#ini_set('display_errors', 1);
+	umask(0);
+	Mage::app();
+	Mage::getSingleton('core/session', array('name'=>'frontend'));
+	 
+	$block              = Mage::getSingleton('core/layout');
+	 
+	# HEADER BLOCK
+	$headerBlock        = $block->createBlock('page/html_header')->setTemplate('page/html/header.phtml')->toHtml();
+	 
+	# FOOTER BLOCK
+	$footerBlock        = $block->createBlock('page/html_footer')->setTemplate('page/html/footer.phtml')->toHtml();
+
+	# HEAD BLOCK
+	$headBlock          = $block->createBlock('page/html_head');// this wont give you the css/js inclusion
+	// add js
+	$headBlock->addJs('prototype/prototype.js');
+	$headBlock->addJs('lib/jquery/jquery-1.10.2.min.js');
+	$headBlock->addJs('lib/jquery/noconflict.js');
+	$headBlock->addJs('lib/ccard.js');
+	$headBlock->addJs('prototype/validation.js');
+	$headBlock->addJs('scriptaculous/builder.js');
+	$headBlock->addJs('scriptaculous/effects.js');
+	$headBlock->addJs('scriptaculous/dragdrop.js');
+	$headBlock->addJs('scriptaculous/controls.js');
+	$headBlock->addJs('scriptaculous/slider.js');
+	$headBlock->addJs('varien/js.js');
+	$headBlock->addJs('varien/form.js');
+	$headBlock->addJs('varien/menu.js');
+	$headBlock->addJs('varien/weee.js');
+	$headBlock->addJs('mage/translate.js');
+	$headBlock->addJs('mage/cookies.js');
+	$headBlock->addJs('mage/directpost.js');
+	$headBlock->addJs('mage/captcha.js');
+	$headBlock->addJs('mage/centinel.js');
+	$headBlock->addJs('faspay/jquery.bootstrap-responsive-tabs.js');
+	$headBlock->addJs('faspay/bootstrap.min.js');
+	$headBlock->addJs('faspay/jquery.js');
+	# add css
+	$headBlock->addCss('css/styles.css');
+	$headBlock->getCssJsHtml();
+	$headBlock->getIncludes();
+	 
+	# HEADER BLOCK
+	$headerBlock        = $block->createBlock('page/html_header')->setTemplate('page/html/header.phtml')->toHtml();
+	 
+	# FOOTER BLOCK
+	$footerBlock        = $block->createBlock('page/html_footer')->setTemplate('page/html/footer.phtml')->toHtml();
+?>
+<html>
+<head>
+<?php echo $headBlock->toHtml(); ?>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="page">
+			<?php echo $headerBlock; ?>
+			<div class="main-container col1-layout">
+				<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+	<div class="row">
+		<div class="panel" style="margin:0 0 0 5px; margin-bottom:20px;">
+			<div class="channel-group channel-active">
+				<div class="channel">
+					<h3>Transaction Order Detail</h3><br>
+				</div>
+				<div class="channel-group-body">
+					<div class="row">
+						<table class="table table-hover" style="width:100%">
+							<tr>
+								<td>Transaction Id</td>
+								<td><?= $this->faspay_billno ?></td>
+							</tr>
+							<tr>
+								<td>Virtual Account No</td>
+								<td><?= $this->faspay_trxid?></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			<div class="channel-group">
+				<ul class="nav nav-tabs nav-justified responsive-tabs" role="tablist">
+					<li class="active"><a href="#atm" role="tab" data-toggle="tab">ATM</a></li>
+					<li><a href="#internet_banking" role="tab" data-toggle="tab">Internet Banking</a></li>					
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="atm">
+						    <strong>Tata Cara Membayar Melalui ATM</strong>
+							<ul style='list-style: circle;'>
+								<li>Pilih menu “Transaksi Lainnya”.</li>
+								<li>Pilih menu “Transfer”.</li>
+								<li>Pilih menu “Ke Rek BCA Virtual Account”.</li>
+								<li>Masukkan nomor Virtual Account Anda (<?= $rsp["trx_id"] ?>), pilih “Benar”.</li>
+								<li>Masukkan jumlah nominal yang akan ditransfer, pilih “Benar”.</li>
+								<li>Pilih “Ya” jika telah setuju dengan konfirmasi pembayaran.</li>
+								<li>Pastikan semua nomor dan angka yang Anda masukkan adalah benar.</li>
+								<li>Simpan Slip ATM BCA sebagai bukti pembayaran.</li>
+							</ul>
+						
+					</div>
+					<div class="tab-pane" id="internet_banking">
+						    <strong>Tata Cara Membayar Melalui BCA Internet Banking</strong>
+							<ul style='list-style: circle;'>
+									<li>Pada Halaman Utama pilih submenu Lain-lain di bawah menu Pembayaran</li>        
+									<li>Cari Penyedia Jasa 70009 MitraPay</li>
+									<li>Isi Nomor Pelanggan yang anda dapatkan</li>  
+									<li>Masukkan Jumlah Pembayaran sesuai dengan Jumlah Tagihan anda</li>
+									<li>Pilih LANJUTKAN</li>
+									<li>Transaksi selesai, jika perlu CETAK hasil transaksi anda</li>									         
+							</ul>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+			</div>
+			<?php echo $footerBlock; ?>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript" language="javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/faspay/jquery.bootstrap-responsive-tabs.js'?>"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.responsive-tabs').responsiveTabs({
+			accordionOn: ['xs', 'sm']
+		});
+	}) 
+</script>
+
+<style type="text/css">
+.channel-group {
+    position: relative;
+    margin: 0 5px;
+    padding: 25px 40px;
+}
+.channel-group:first-child {
+    margin-top: 5px;
+}
+.channel-group.disabled {
+    color: #ccc;
+}
+.channel-group.disabled .channel-group-title,
+.channel-group.disabled .i-radio-button {
+    cursor: not-allowed;
+}
+.channel-group:after {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    height: 0;
+    border-bottom: 1px solid #eee;
+}
+.channel-group .i-radio-button {
+    float: left;
+    margin-left: -25px;
+    margin-top: 2px;
+}
+.channel-group-header {
+    margin-right: 310px;
+}
+.channel-group-header .note {
+    margin: 5px 0 0;
+    padding: 0;
+}
+.channel-group-header .recharge-balance {
+    margin-left: 10px;
+    white-space: nowrap;
+}
+.channel-group-title {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.6;
+    cursor: pointer;
+	width: auto;
+}
+.channel-group-title a {
+    font-weight: 400;
+    font-size: 12px;
+}
+.channel-group-body {
+    display: none;
+    clear: both;
+}
+.channel-active {
+    background-color: #f6f6f6;
+}
+.channel-active .channel-group-body {
+    display: block;
+}
+.channel-active .more-payments-preview {
+    display: none;
+}
+.tab-pane{
+	padding: 10px;
+}
+.nav-tabs > li.active{
+	border-top: 4px solid #f15a29;
+	border-radius: 10px 15px 50px 50px;
+	-moz-border-radius: 10px 15px 50px 50px;
+	-webkit-border-radius: 10px 15px 50px 50px;
+}
+.nav-tabs{
+	//background-color:#b7b7b7;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover{
+	background-color: white !important;
+	//color:#fff;
+}
+.nav-tabs > li > a{
+	color:black;
+}
+.nav-tabs > li > a:hover{
+	transition: background 0.3s ease 0s;
+	background-color: #b7b7b7 !important;
+	border: medium none;
+	border-radius: 0;
+	color: black;
+}
+
+.nav > li  {
+	position:relative;
+	display:block
+}
+.nav>li>a{position:relative;display:block;padding:10px 15px}.nav>li>a:hover,.nav>li>a:focus{text-decoration:none;background-color:#eee}
+.nav>li.disabled>a{color:#777}
+.nav>li.disabled>a:hover,
+.nav>li.disabled>a:focus{color:#777;text-decoration:none;cursor:not-allowed;background-color:transparent}
+.nav .open>a,.nav .open>a:hover,.nav .open>a:focus{background-color:#eee;border-color:#428bca}
+.nav .nav-divider{height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}.nav>li>a>img{max-width:none}
+.nav-tabs{border-bottom:1px solid #ddd}
+.nav-tabs>li{float:left;margin-bottom:-1px}
+.nav-tabs>li>a{margin-right:2px;line-height:1.42857143;border:1px solid transparent;border-radius:4px 4px 0 0}
+.nav-tabs>li>a:hover{border-color:#eee #eee #ddd}
+.nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus{color:#555;cursor:default;background-color:#fff;border:1px solid #ddd;border-bottom-color:transparent}
+.nav-tabs.nav-justified{width:100%;border-bottom:0}
+.nav-tabs.nav-justified>li{float:none}
+.nav-tabs.nav-justified>li>a{margin-bottom:5px;text-align:center}
+.nav-tabs.nav-justified>.dropdown .dropdown-menu{top:auto;left:auto}@media (min-width:768px){.nav-tabs.nav-justified>li{display:table-cell;width:1%}
+.nav-tabs.nav-justified>li>a{margin-bottom:0}}
+.nav-tabs.nav-justified>li>a{margin-right:0;border-radius:4px}
+.nav-tabs.nav-justified>.active>a,.nav-tabs.nav-justified>.active>a:hover,.nav-tabs.nav-justified>.active>a:focus{border:1px solid #ddd}@media (min-width:768px){.nav-tabs.nav-justified>li>a{border-bottom:1px solid #ddd;border-radius:4px 4px 0 0}
+.nav-tabs.nav-justified>.active>a,.nav-tabs.nav-justified>.active>a:hover,.nav-tabs.nav-justified>.active>a:focus{border-bottom-color:#fff}}
+.nav-pills>li{float:left}
+.nav-pills>li>a{border-radius:4px}
+.nav-pills>li+li{margin-left:2px}
+.nav-pills>li.active>a,.nav-pills>li.active>a:hover,.nav-pills>li.active>a:focus{color:#fff;background-color:#428bca}
+.nav-stacked>li{float:none}.nav-stacked>li+li{margin-top:2px;margin-left:0}
+.nav-justified{width:100%}.nav-justified>li{float:none}
+.nav-justified>li>a{margin-bottom:5px;text-align:center}
+.nav-justified>.dropdown .dropdown-menu{top:auto;left:auto}
+@media (min-width:768px){.nav-justified>li{display:table-cell;width:1%}
+.nav-justified>li>a{margin-bottom:0}}.nav-tabs-justified{border-bottom:0}
+.nav-tabs-justified>li>a{margin-right:0;border-radius:4px}
+.nav-tabs-justified>.active>a,.nav-tabs-justified>.active>a:hover,.nav-tabs-justified>.active>a:focus{border:1px solid #ddd}@media (min-width:768px){.nav-tabs-justified>li>a{border-bottom:1px solid #ddd;border-radius:4px 4px 0 0}.nav-tabs-justified>.active>a,.nav-tabs-justified>.active>a:hover,.nav-tabs-justified>.active>a:focus{border-bottom-color:#fff}}
+.tab-content>.tab-pane{display:none;visibility:hidden}
+.tab-content>.active{display:block;visibility:visible}
+.nav-tabs .dropdown-menu{margin-top:-1px;border-top-left-radius:0;border-top-right-radius:0};
+.tab-content>.tab-pane{
+	display:none;
+	visibility:hidden
+}
+.tab-content>.active{
+	display:block;
+	visibility:visible
+}
+.responsive-tabs-container[class*="accordion-"] .tab-pane {
+  margin-bottom: 15px;
+}
+.responsive-tabs-container[class*="accordion-"] .accordion-link {
+  display: none;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+</style>

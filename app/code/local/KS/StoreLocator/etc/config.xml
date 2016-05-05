@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_StoreLocator
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Configuration of StoreLocator
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ *
+ */
+ -->
+<config>
+    <modules>
+        <KS_StoreLocator>
+            <version>0.0.1</version>
+        </KS_StoreLocator>
+    </modules>
+    <global>
+        <helpers>
+            <storelocator>
+                <class>KS_StoreLocator_Helper</class>
+            </storelocator>
+        </helpers>
+        <blocks>
+            <storelocator>
+                <class>KS_StoreLocator_Block</class>
+            </storelocator>
+        </blocks>
+        <models>
+            <storelocator>
+                <class>KS_StoreLocator_Model</class>
+                <resourceModel>storelocator_mysql4</resourceModel>
+            </storelocator>
+            <storelocator_mysql4>
+                <class>KS_StoreLocator_Model_Mysql4</class>   
+                <entities>
+                    <store>
+                        <table>gaboli_warehouse_location</table>
+                    </store>
+                </entities>  
+            </storelocator_mysql4>      
+        </models>
+        <resources>
+        	<ks_storelocator_setup>
+                <setup>
+                    <module>KS_StoreLocator</module>
+                </setup>
+                <connection>
+					<use>core_setup</use>
+				</connection>
+            </ks_storelocator_setup>
+            <storelocator_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </storelocator_write>
+            <storelocator_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </storelocator_read>      
+        </resources>
+        <!--<rewrite>
+            <storelocator_store_index>
+                <from><![CDATA[#^/store-locator/#]]></from>
+                <to><![CDATA[/storelocator/store/index/]]></to>
+            </storelocator_store_index>
+        </rewrite>-->
+    </global>
+    <frontend>
+        <routers>
+            <storelocator>
+                <use>standard</use>
+                <args>
+                    <module>KS_StoreLocator</module>
+                    <frontName>storelocator</frontName>
+                </args>
+            </storelocator>
+        </routers>  
+        <!--<layout>
+            <updates>
+                <storelocator>
+                    <file>ks_storelocator.xml</file>
+                </storelocator>
+            </updates>
+        </layout>-->
+    </frontend>
+    <admin>
+        <routers>
+            <storelocator>
+                <use>admin</use>
+                <args>
+                    <module>KS_StoreLocator</module>
+                    <frontName>storelocator</frontName>
+                </args>
+            </storelocator>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <KS_StoreLocator before="Mage_Adminhtml">KS_StoreLocator_Adminhtml</KS_StoreLocator>
+                    </modules>
+                </args>
+          </adminhtml>
+        </routers>
+    </admin>
+</config>    

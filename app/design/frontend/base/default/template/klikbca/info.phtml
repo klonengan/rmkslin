@@ -1,0 +1,18 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+?>
+<?php 
+	echo $this->getMethod()->getTitle() . '<br/>';
+	if ($this->getInfo()->getLastTransId() == '') {
+		echo '<em>' . $this->__('You will be redirected to the page order details, do not forget to make a payment.') . '</em>';
+	} else {
+		echo $this->__('Faspay Transaction ID: %s', $this->htmlEscape($this->getInfo()->getLastTransId())) . '<br/>';
+	}
+?>

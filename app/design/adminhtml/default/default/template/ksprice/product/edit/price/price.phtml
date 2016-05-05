@@ -1,0 +1,150 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Price_Tier */
+?>
+<?php $_htmlId      = $this->getElement()->getHtmlId() ?>
+<?php $_htmlClass   = $this->getElement()->getClass() ?>
+<?php $_htmlName    = $this->getElement()->getName() ?>
+<?php $_readonly    = 0 ?>
+<?php $_showWebsite = 1; ?>
+<?php $_editWebsite = 1; ?>
+<?php $_priceValueValidation = $this->getPriceValidation('validate-greater-than-zero'); ?>
+
+
+<?php $_showWebsite = 1; ?>
+<?php $_showWebsite= 1; ?>
+<tr>
+    <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
+    <td colspan="10" class="grid tier" style="padding-left:5px; width:550px">
+    <table cellspacing="0" class="data border" id="tiers_table" style="width:550px">
+        <?php if ($_showWebsite): ?>
+        <col width="185" />
+        <?php endif; ?>
+        <col width="120" />
+        <col width="75" />
+        <col />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th <?php if (!$_showWebsite): ?>style="display:none"<?php endif; ?>><?php echo Mage::helper('sales')->__('Warehouse') ?></th>
+                <th><?php echo $this->getPriceColumnHeader(Mage::helper('catalog')->__('Price')) ?></th>
+                <th class="last"><?php echo Mage::helper('catalog')->__('Action') ?></th>
+            </tr>
+        </thead>
+        <tbody id="<?php echo $_htmlId ?>_container"></tbody>
+        <tfoot>
+            <tr>
+                <td <?php if (!$_showWebsite): ?>style="display:none"<?php endif; ?>></td>
+                <td colspan="4" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+        </tfoot>
+    </table>
+
+<script type="text/javascript">
+//<![CDATA[
+var warehousePriceRowTemplate = '<tr>'
+    + '<td<?php if (!$_showWebsite): ?> style="display:none"<?php endif; ?>>'
+    + '<select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][warehouse_id]" id="warehouse_price_row_{{index}}_warehouse_id">'
+    <?php foreach ($this->getWarehouse() as $_warehouse): ?>
+    + '<option value="<?php echo $_warehouse['value'] ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($_warehouse['label'])) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+	+ '<td><input class="<?php echo $_htmlClass ?> <?php echo $_priceValueValidation ?>" type="text" name="<?php echo $_htmlName ?>[{{index}}][price]" value="{{price}}" id="warehouse_price_row_{{index}}_price" /></td>'
+    + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="warehouse_price_row_{{index}}_delete" />'
+    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Club Price")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="warehouse_price_row_{{index}}_delete_button" onclick="return warehousePriceControl.deleteItem(event);">'
+    + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
+    + '</tr>';
+
+var warehousePriceControl = {
+    template: new Template(warehousePriceRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+    itemsCount: 0,
+    addItem : function () {
+        <?php if ($_readonly): ?>
+        if (arguments.length < 2) {
+            return;
+        }
+        <?php endif; ?>
+        var data = {
+            warehouse_id: '0',
+            price: '',
+            readOnly: false,
+            index: this.itemsCount++
+        };
+
+        if(arguments.length >= 2) {
+            data.warehouse_id 	= arguments[0];
+            data.price      = arguments[1];
+        }
+        if (arguments.length == 5) {
+            data.readOnly = arguments[4];
+        }
+
+        Element.insert($('<?php echo $_htmlId ?>_container'), {
+            bottom : this.template.evaluate(data)
+        });
+
+        $('warehouse_price_row_' + data.index + '_warehouse_id').value    = data.warehouse_id;
+        $('warehouse_price_row_' + data.index + '_price').value    = data.price;
+
+        if (data.readOnly == '1') {
+            ['warehouse_id','price', 'delete'].each(function(idx){
+                $('warehouse_price_row_'+data.index+'_'+idx).disabled = true;
+            });
+            $('warehouse_price_row_'+data.index+'_delete_button').hide();
+        }
+
+        <?php if ($_readonly): ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(this.disableElement);
+        $('<?php echo $_htmlId ?>_container').up('table').select('button').each(this.disableElement);
+        <?php else: ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(function(el){ Event.observe(el, 'change', el.setHasChanges.bind(el)); });
+        <?php endif; ?>
+    },
+    disableElement: function(el) {
+        el.disabled = true;
+        el.addClassName('disabled');
+    },
+    deleteItem: function(event) {
+        var tr = Event.findElement(event, 'tr');
+        if (tr) {
+            Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+            Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+            Element.hide(tr);
+            Element.addClassName(tr, 'no-display template');
+        }
+        return false;
+    }
+};
+<?php foreach ($this->getValues() as $_item): ?>
+warehousePriceControl.addItem('<?php echo $_item['location_id'] ?>', '<?php echo sprintf('%.2f', $_item['price']) ?>',0);
+<?php endforeach; ?>
+<?php if ($_readonly): ?>
+$('<?php echo $_htmlId ?>_container').up('table').select('button')
+    .each(warehousePriceControl.disableElement);
+<?php endif; ?>
+//]]>
+</script>
+</td></tr>

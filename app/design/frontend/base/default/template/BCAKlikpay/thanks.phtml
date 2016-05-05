@@ -1,0 +1,148 @@
+<?php
+/**
+ * Magento
+ *
+ * @author    Faspay http://faspay.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+	$mageFilename = 'app/Mage.php';
+	require_once $mageFilename;
+	#Mage::setIsDeveloperMode(true);
+	#ini_set('display_errors', 1);
+	umask(0);
+	Mage::app();
+	Mage::getSingleton('core/session', array('name'=>'frontend'));
+	 
+	$block              = Mage::getSingleton('core/layout');
+	 
+	# HEAD BLOCK
+	$headBlock          = $block->createBlock('page/html_head');// this wont give you the css/js inclusion
+	// add js
+	$headBlock->addJs('prototype/prototype.js');
+	$headBlock->addJs('lib/jquery/jquery-1.10.2.min.js');
+	$headBlock->addJs('lib/jquery/noconflict.js');
+	$headBlock->addJs('lib/ccard.js');
+	$headBlock->addJs('prototype/validation.js');
+	$headBlock->addJs('scriptaculous/builder.js');
+	$headBlock->addJs('scriptaculous/effects.js');
+	$headBlock->addJs('scriptaculous/dragdrop.js');
+	$headBlock->addJs('scriptaculous/controls.js');
+	$headBlock->addJs('scriptaculous/slider.js');
+	$headBlock->addJs('varien/js.js');
+	$headBlock->addJs('varien/form.js');
+	$headBlock->addJs('varien/menu.js');
+	$headBlock->addJs('varien/weee.js');
+	$headBlock->addJs('mage/translate.js');
+	$headBlock->addJs('mage/cookies.js');
+	$headBlock->addJs('mage/directpost.js');
+	$headBlock->addJs('mage/captcha.js');
+	$headBlock->addJs('mage/centinel.js');
+	# add css
+	$headBlock->addCss('css/styles.css');
+	$headBlock->getCssJsHtml();
+	$headBlock->getIncludes();
+	 
+	# HEADER BLOCK
+	$headerBlock        = $block->createBlock('page/html_header')->setTemplate('page/html/header.phtml')->toHtml();
+	 
+	# FOOTER BLOCK
+	$footerBlock        = $block->createBlock('page/html_footer')->setTemplate('page/html/footer.phtml')->toHtml();
+?>
+<html>
+<head>
+<?php echo $headBlock->toHtml(); ?>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="page">
+			<?php echo $headerBlock; ?>
+			<div class="main-container col1-layout">
+				<div class="main">
+					<div class="col-main">
+					<?php
+						$orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+						if ($this->faspay_status =="SUCCESS"){
+							echo "<h1><p> <font size=10pt>Thank You</font> </p></h1><br>";
+							echo "<font color=red size=4pt>Your Payment For Transaction ID </font><font color=Black size=5> ".$orderId."</font><font color=red size=4pt> SUCCESS</font>";
+						}else{
+							echo "<h1><p> <font size=10pt>Sorry</font> </p></h1><br>";
+							echo "Apologies. Your Payment Was Not Successful. If Your Payment Is Success, Kindly Email Us The Following Details For Verification.<br><br>";
+							echo "<font color=red size=4pt>".$this->getErrorMessage()."</font><br><br>";
+							echo $this->__('Please <a href="%s">Continue Shopping</a>.', $this->getContinueShoppingUrl());
+						}
+					?>   
+					</div>
+				</div>
+			</div>
+			<?php echo $footerBlock; ?>
+		</div>
+	</div>
+</body>
+</html>
+<html>
+  <head>
+    <script type="text/javascript">
+      WebFontConfig = {
+        google: { families: [ 'Josefin Sans Std Light', 'Lobster' ] }
+      };
+      (function() {
+          var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
+    <style type="text/css">
+      .wf-active p.text {
+        font-family: 'Calibri', serif;
+        font-size: 16px;
+        text-align: justify;
+        color:#666666;
+        border: 1px solid #CCCCCC;
+        -moz-border-radius: 20px;
+        -webkit-border-radius: 20px;
+        padding: 20px
+      }
+ 
+      .wf-active h2 {
+        font-family: 'Lobster', serif;
+        font-size: 20px;
+        color: #666666
+      }
+ 
+      .wf-active h1 {
+        font-family: 'Lobster', serif;
+        font-size: 45px;
+        color: #006699;
+        margin-bottom: 10px;
+      }
+ 
+      div.body {
+        max-width: 850px;
+        margin: auto;
+        background-color: #FFFFFF;
+        padding: 30px 50px 0px 50px;
+        text-align: left;
+        height: 60%;
+      }
+      p.bugs {
+        font: 12px/1.55 Arial,Helvetica,sans-serif;
+        text-align: center;
+      }
+ 
+      p.otherdata {
+        font-family: 'Calibri', serif;
+        font-size: 15px;
+        color: #999999;
+        margin-bottom: 20px
+      }
+ 
+      .otherdata strong {
+        color: #000000
+      }
+    </style>

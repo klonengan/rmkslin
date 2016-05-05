@@ -1,0 +1,29 @@
+<!-- desktop version and tablet landscape -->
+<div class="promo_banner_background hidden-xs hidden-sm " style="padding-top: 20px; margin-bottom: 20px;">
+    <div class="container">
+        <?php for($i=1;$i<=4;$i++) { ?>
+        <?php $banner = "banner-".$i.".jpg"; ?>
+        <div class="col-sm-6 col-md-6 col-lg-3">
+            <a href="#" class="promo-href thumbnail">
+                <div class="overlay-promo-banner">VIEW DETAIL</div>
+                <img src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/'.$banner; ?>" alt="...">
+            </a>
+        </div>
+        <?php } ?>
+
+    </div>
+</div>
+
+<!-- mobile version and tablet potrait -->
+<div class="promo_banner_background hidden-md hidden-lg" style="padding:20px 15px;>
+    <div class="container">
+        <div id="promo-mobile-banner" class="owl-carousel">
+        <?php for($i=1;$i<=4;$i++) { ?>
+            <?php $banner = "banner-".$i.".jpg"; ?>
+            <a href="#" class="promo-href-mobile">
+            <img class="img-responsive" src="<?php echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'store/banner/'.$banner; ?>" alt="...">
+            </a>
+        <?php } ?>
+        </div>
+    </div>
+</div>

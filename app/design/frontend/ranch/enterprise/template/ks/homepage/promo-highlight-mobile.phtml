@@ -1,0 +1,172 @@
+<script type="application/javascript">
+    jQuery(document).ready(function(){
+        jQuery('#btn-bestsell').on('click', function(){
+            this.addClassName('active');
+            jQuery('#btn-promo').removeClass('active');
+            jQuery('#content-highlight').show();
+            jQuery('#content-promo').hide();
+        });
+
+        jQuery('#btn-promo').on('click', function(){
+            this.addClassName('active');
+            jQuery('#btn-bestsell').removeClass('active')
+            jQuery('#content-highlight').hide();
+            jQuery('#content-promo').show();
+        });
+    });
+</script>
+
+<div class="container visible-sm visible-xs">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- button group -->
+            <div class="btn-group btn-promo-highlight-holder" role="group" aria-label="...">
+                <a class="btn btn-promo-highlight active" id="btn-promo">PROMO</a>
+                <a class="btn btn-promo-highlight" id="btn-bestsell">BEST SELLING</a>
+            </div>
+
+            <!-- content promo
+            -------------------------------------------------------------------------------------------------------------------->
+            <div id="content-promo">
+                <?php
+                /**
+                 * If you want to display products from any specific category
+                 */
+                $categoryId = 16;
+                $category = Mage::getModel('catalog/category')->load($categoryId);
+                $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+                /**
+                 * Getting product collection for a particular category
+                 */
+                $prodCollection = Mage::getResourceModel('catalog/product_collection')
+                    ->addCategoryFilter($category)
+                    ->addAttributeToSelect('*');
+
+                /**
+                 * Applying status and visibility filter to the product collection
+                 * i.e. only fetching visible and enabled products
+                 */
+                Mage::getSingleton('catalog/product_status')
+                    ->addVisibleFilterToCollection($prodCollection);
+
+                Mage::getSingleton('catalog/product_visibility')
+                    ->addVisibleInCatalogFilterToCollection($prodCollection);
+                ?>
+                <div class="container_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-body">
+                                    <?php if(!$prodCollection): ?>
+                                        <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+                                    <?php else: ?>
+
+                                        <div>
+                                            <div id="owl-demo2" class="owl-carousel">
+                                                <?php foreach($prodCollection  as $product ) : ?>
+                                                    <div class="item">
+
+                                                        <div class="thumbnail">
+                                                            <a href="<?php echo $product->getProductUrl(); ?>" >
+                                                                <img src="<?php echo $product->getImageUrl(); ?>" alt="...">
+                                                                <div class="caption">
+                                                                    <p class="title"><?php echo $product->getName(); ?></p>
+                                                                    <span><?php echo $currency_code.' '.number_format($product->getPrice()); ?></span>
+                                                                    <!--<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>-->
+                                                                </div>
+                                                                <div class="rate-star">
+                                                                    <?php $summaryData = Mage::getModel('review/review_summary')->load($product->getId()); ?>
+                                                                    <div class="ratings">
+                                                                        <div class="rating-box">
+                                                                            <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+
+                                            <?php //echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'icon/left-arrow.png'; ?>
+                                            <?php //echo $image_url =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'icon/right-arrow.png'; ?>
+                                        </div>
+
+                                    <?php endif; ?>
+                                </div>
+                                <p class="text-center">
+                                    <a href="#" class="btn button-merah text-capitalize"><?php echo $this->__('See all promotion products'); ?></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end of content promo -->
+
+            <!-- content highlight
+            --------------------------------------------------------------------------------------------------------------------------->
+            <div id="content-highlight">
+                <?php
+                $_producthighlight = Mage::helper('homepage')->highlighthome();
+                $curr = Mage::app()->getStore()->getCurrentCurrencyCode();
+                ?>
+                
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            <div id="owl-demo3" class="owl-carousel">
+                                <?php foreach( $_producthighlight  as $product ){ ?>
+                                    <div>
+                                        <?php $attributeName = $product->getAttributeText('highlight');  ?>
+                                        <?php
+                                        $icon = '';
+                                        switch($attributeName)
+                                        {
+                                            case 'Sale';
+                                                $icon = "highlight_new";
+                                                break;
+                                            case 'New';
+                                                $icon = "highlight_sale";
+                                                break;
+                                            case 'Best Seller';
+                                                $icon = "highlight_seller";
+                                                break;
+                                        }
+                                        ?>
+                                        <div class="item">
+                                        <div class="thumbnail">
+
+                                            <a href="<?php echo $product->getProductUrl(); ?>" >
+                                                <span class="<?php echo $icon; ?>"></span>
+                                                <img src="<?php echo $product->getImageUrl(); ?>" alt="<?php echo $product->getName(); ?>">
+                                                <div class="caption">
+                                                    <p class="title"><?php echo $product->getName(); ?></p>
+                                                    <span><?php echo $curr.' '.number_format($product->getPrice()); ?></span>
+                                                </div>
+                                                <div class="rate-star">
+                                                    <?php $summaryData = Mage::getModel('review/review_summary')->load($product->getId()); ?>
+                                                    <div class="ratings">
+                                                        <div class="rating-box">
+                                                            <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div></div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end of highlist item -->
+
+        </div>
+    </div>
+</div>
+

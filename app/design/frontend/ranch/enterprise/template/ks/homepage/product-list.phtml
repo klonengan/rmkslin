@@ -1,0 +1,48 @@
+<?php
+$entity     = 'catalog_product';
+$code       = 'highlight';
+$attr       = Mage::getResourceModel('catalog/eav_attribute')->loadByCode($entity,$code);
+$curr       = Mage::app()->getStore()->getCurrentCurrencyCode();
+$storeId    = Mage::app()->getStore()->getId();
+if ($attr->getId()) :
+    $attr_id = $attr['default_value'];
+    $products = Mage::getModel('catalog/product')->getCollection();
+    $products->addAttributeToSelect('*');
+    $products->addAttributeToFilter('highlight', $attr_id);
+    $products->setPageSize(4);
+endif;
+//var_dump($products->getData());
+?>
+
+<div class="col-md-9">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="star"></span>Highlighted Product</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <?php foreach( $products  as $product ){ ?>
+                <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <a href="<?php echo $product->getProductUrl(); ?>" >
+                        <img src="<?php echo $product->getImageUrl(); ?>" alt="<?php echo $product->getName(); ?>">
+                        <div class="caption">
+                            <p class="title"><?php echo $product->getName(); ?></p>
+                            <span><?php echo $curr.' '.number_format($product->getPrice()); ?></span>
+                        </div>
+                        <div class="rate-star">
+                            <?php $summaryData = Mage::getModel('review/review_summary')->load($product->getId()); ?>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

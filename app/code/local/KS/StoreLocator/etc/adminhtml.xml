@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    KS
+ * @package     KS_StoreLocator
+ * @copyright   Copyright (c) 2014 Kemana Services (http://www.kemanaservices.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Setting Menu and ACL for StoreLocator
+ *
+ * @author      Edi Suryadi <esuryadi@kemanaservices.com>
+ */
+ -->
+<config>
+    <!--<menu>
+         <ksall>
+            <children>
+                <storelocator translate="title" module="storelocator">
+                    <title>Store Locator</title>
+                    <sort_order>70</sort_order>
+                    <action>storelocator/adminhtml_store/index</action>
+                </storelocator>
+            </children>
+         </ksall>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <storelocator translate="title" module="storelocator">
+                                        <title>Store Locator</title>
+                                        <sort_order>720</sort_order>
+                                    </storelocator>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <ksall>
+                        <children>
+                            <storelocator translate="title" module="storelocator">
+                                <title>Store Locator</title>
+                                <sort_order>90</sort_order>
+                                <children>
+                                    <actions translate="title">
+                                        <title>Actions</title>
+                                        <sort_order>10</sort_order>
+                                        <children>
+                                            <view translate="title"><title>View Store Locator</title><sort_order>10</sort_order></view>
+                                            <edit translate="title"><title>Edit Store Locator</title><sort_order>20</sort_order></edit>
+                                            <delete translate="title"><title>Delete Store Locator</title><sort_order>30</sort_order></delete>
+                                            <add translate="title"><title>Add Store Locator</title><sort_order>40</sort_order></add>
+                                        </children>
+                                    </actions>
+                                </children>
+                            </storelocator>
+                        </children>
+                    </ksall>
+                </children>
+            </admin>
+        </resources>
+    </acl>-->
+</config>

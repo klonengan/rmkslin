@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <KS_KSDirectory>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+            	<KS_Ksall/>
+        	</depends>
+        </KS_KSDirectory>
+    </modules>
+</config> 

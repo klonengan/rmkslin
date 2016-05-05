@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Faspaycc_BcaCc>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Faspaycc_BcaCc>
+    </modules>
+</config>

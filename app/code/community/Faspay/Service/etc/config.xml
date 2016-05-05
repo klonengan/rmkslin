@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @author    Faspay http://Service.mediaindonusa.com <cs@mediaindonusa.com>
+ * @copyright Copyright (C) 2013 MediaIndonusa. (http://faspay.mediaindonusa.com)
+ *
+**/
+
+-->
+<config>
+	<modules>
+		<Faspay_Service>
+			<version>2.0.1</version>
+		</Faspay_Service>
+	</modules>
+	<global>
+		<models>
+			<Service>
+				<class>Faspay_Service_Model</class>
+			</Service>
+		</models>
+        <helpers>
+            <Service>
+                <class>Faspay_Service_Helper</class>
+            </Service>
+        </helpers>
+		<blocks>
+			<Service>
+				<class>Faspay_Service_Block</class>
+			</Service>
+		</blocks>
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<payment_tenor>
+					<to_order_payment>*</to_order_payment>
+				</payment_tenor>
+			</sales_convert_quote_payment>
+		</fieldsets>
+		<resources>
+			<Service_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</Service_write>
+			<Service_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</Service_read>
+		</resources>
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<Service>
+					<file>Service.xml</file>
+				</Service>
+			</updates>
+		</layout>
+		<routers>
+			<Service>
+				<use>standard</use>
+				<args>
+					<module>Faspay_Service</module>
+					<frontName>Service</frontName>
+				</args>
+			</Service>
+		</routers>
+	</frontend>
+	<adminhtml>
+		<acl>
+			<resources>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<Service>
+											<title>Faspay Account Settings</title>
+										</Service>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+	
+	<default>
+		<Service>
+			<settings>
+				<activationstatus>1</activationstatus>
+				<active>1</active>
+				<title>Faspay</title>
+				<order_status>pending</order_status>
+			</settings>
+		</Service>
+	</default> 
+</config>

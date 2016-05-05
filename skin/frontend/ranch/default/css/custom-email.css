@@ -1,0 +1,46 @@
+.action-content{
+    text-align: center;
+}
+
+#background-table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody{
+    background-color: #eadeca;
+    border-bottom: 10px solid #936b47;
+}
+
+#background-table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr > td{
+    text-align: center !important;
+}
+
+#background-table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr > td > a{
+    float: none !important;
+}
+
+.closing-text{
+    background-color: white;
+    color: black !important;
+    font-size: 0.83em;
+    max-width: 599px;
+    width: 100%;
+    margin: 0 auto !important;
+}
+
+.closing-text p{
+    font-size: 14px;
+    margin: 0;
+    padding: 3px;
+}
+
+#background-table > tbody > tr > td > table > tbody > tr:nth-child(2) > td{
+    padding: 0 !important;
+}
+
+.kesupermarket-footer{
+    margin-bottom: 20px;
+}
+
+div.closing-text > img{
+    width: 100%;
+    max-width: 450px;
+}
+
+/* :) */
