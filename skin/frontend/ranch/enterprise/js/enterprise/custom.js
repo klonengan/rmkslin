@@ -580,7 +580,7 @@ $j(document).ready(function () {
                 $j(".sub-cate-list").show();
             }
         }
-
+        stickynavme();
     }/** end of sticky_relocate() **/
 
     $j(".btn-scroll-top").click(function () {
@@ -598,7 +598,7 @@ $j(document).ready(function () {
 
 
     if (cmshome) {
-        console.log('home');
+        //console.log('home');
         menuDiv.show();
     } else {
         //console.log('not home');
@@ -606,6 +606,56 @@ $j(document).ready(function () {
         //$j("#nav").attr("style","display:none !important");
     }
 
+    function stickynavme(){
+        if (cmshome) {
+            if(homeMenu.hasClass('category-menu-title-sticky')){
+                $j(homeMenu)
+                    .mouseenter(function () {
+
+                        if (menuTimeOutId == null) {
+                            $j(menuDiv).show();
+
+                        }else{
+                            clearTimeout(menuTimeOutId);
+                            menuTimeOutId = null;
+                        }
+
+                    })
+                    .mouseleave(function () {
+                        if(menuTimeOutId != null){
+                            clearTimeout(menuTimeOutId);
+                            menuTimeOutId = null;
+                        }
+
+                        menuTimeOutId = setTimeout(function () {
+                            $j(menuDiv).hide();
+                            menuTimeOutId = null;
+                        }, menuTimer)
+
+                    });
+
+                $j(menuDiv)
+                    .mouseenter(function(){
+                        if (menuTimeOutId == null) {
+                            $j(menuDiv).show();
+                        } else {
+                            clearTimeout(menuTimeOutId);
+                            menuTimer = null;
+                        }
+                    })
+                    .mouseleave(function(){
+                        if (menuTimeOutId != null) {
+                            clearTimeout(menuTimeOutId);
+                            menuTimeOutId = null;
+                        }
+                        menuTimeOutId = setTimeout( function() {
+                            $j(menuDiv).hide();
+                            menuTimeOutId = null;
+                        },menuTimer)
+                    })
+            }
+        }
+    }
 
     //menuDiv.hide();
     if (!cmshome) {
